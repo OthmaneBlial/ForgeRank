@@ -12,4 +12,3 @@ data/*
 *.log
 *.tsbuildinfo
 .DS_Store
-drizzle/meta/
