@@ -19,6 +19,10 @@ Every calculation also produces exactly one structured reason for each dimension
 
 File-presence signals describe whether expected repository structures were observed. They never claim that code is correct, secure, or high quality. Git-author metrics likewise remain separate from public account identity.
 
+## README structure v1
+
+Git analysis v3 selects the shallowest canonical README path, records the exact observed blob size, and inspects at most 512 KiB of content. README structure v1 counts Markdown headings, recognized status badges, installation-oriented headings, and documentation links, while exposing at most 20 sanitized heading titles. If a blob exceeds the cap or cannot be read from a partial clone, size evidence may remain while content-derived fields stay unavailable. These fields are structural observations, never a documentation-quality score.
+
 ## Trending v1
 
 Trending combines log-normalized absolute observed growth, relative growth against the starting baseline, and acceleration across the observation window. It requires at least two points to calculate any change and uses the requested window length to determine confidence. Counter decreases return no trend score and create a reviewable anomaly signal.

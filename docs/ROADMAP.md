@@ -8,7 +8,7 @@ Acceptance: migrations, conservative public-document adapter, safe Git adapter, 
 
 ## Repository intelligence
 
-Acceptance: bounded Git enrichment, activity/history charts, contributor concentration, technology and quality detectors, score explanations, aliases, stale/error states, and ranking history work across representative repositories. Status: **implemented for available evidence**; the complete shareable repository-leaderboard filter/sort contract, server-side pagination, exact coverage denominators, completed-run global rank history, windowed rank movement, deterministic human-readable project signals, versioned retained-evidence project timelines, technology ecosystems, and safe quota-driven cache eviction now complement repository-level evidence. Naturally accumulated long-run activity history and broader stale/error proof remain.
+Acceptance: bounded Git enrichment, activity/history charts, contributor concentration, technology and quality detectors, score explanations, aliases, stale/error states, and ranking history work across representative repositories. Status: **implemented for available evidence**; the complete shareable repository-leaderboard filter/sort contract, server-side pagination, exact coverage denominators, completed-run global rank history, windowed rank movement, deterministic human-readable project signals, versioned retained-evidence project timelines, bounded README structural analysis, technology ecosystems, and safe quota-driven cache eviction now complement repository-level evidence. Naturally accumulated long-run activity history and broader stale/error proof remain.
 
 ## Discovery and ecosystems
 

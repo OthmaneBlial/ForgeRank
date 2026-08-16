@@ -23,6 +23,7 @@ It observes only policy-permitted public HTML documents, normal public Git trans
 - Versioned fixture-tested repository and public-profile HTML parsers with provenance and structural validation.
 - Safe shallow/blobless Git inspection using argument arrays—never interpolated shell commands.
 - Git-derived activity, privacy-safe author concentration, primary-language detection, quality signals, and technology detection.
+- Bounded README structure analysis for observed blob size, headings, recognized badges, installation guidance, and documentation links, with no subjective quality grade.
 - Versioned ForgeRank Signals that translate maintenance cadence, lifecycle, contributor structure, snapshot momentum, repository structures, and visible Git tags into factual evidence cards without predicting quality or maintainer intent.
 - Evidence-weighted related repositories plus browseable deterministic technology ecosystems.
 - Append-only repository/developer/ranking/language-ecosystem snapshots, source-document audit records, repository aliases/transfers, versioned scores with persisted dimension-level reasons, and bounded background downsampling for long histories.

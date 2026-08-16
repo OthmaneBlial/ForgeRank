@@ -21,7 +21,7 @@ Selectors live in `src/infrastructure/github-public/selectors.ts`. Sanitized fix
 
 ## Git inspection
 
-The Git inspector uses shallow, single-branch, blobless bare clones and incremental fetches. Repository trees are capped at 30,000 paths per analysis. Manifest reads are allowlisted and capped at 512 KiB. Contributor metrics use sanitized Git author display names and irreversible local keys; commit emails are neither stored for display nor surfaced.
+The Git inspector uses shallow, single-branch, blobless bare clones and incremental fetches. Repository trees are capped at 30,000 paths per analysis. Manifest reads are allowlisted and capped at 512 KiB. The shallowest canonical README is size-checked and its content is inspected only when it fits the same 512 KiB ceiling; persisted output contains bounded structural counts and sanitized headings, not raw README content. Contributor metrics use sanitized Git author display names and irreversible local keys; commit emails are neither stored for display nor surfaced.
 
 ## Provenance and confidence
 

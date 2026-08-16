@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { PageHeader } from "@/components/shell/page-header";
+import { README_ANALYSIS_LIMITS, README_ANALYSIS_VERSION } from "@/domain/readme-analysis";
 import { REPOSITORY_EVENT_THRESHOLDS, REPOSITORY_EVENT_VERSION } from "@/domain/repository-events";
 import {
   REPOSITORY_SIGNAL_THRESHOLDS,
@@ -53,6 +54,7 @@ export default function MethodologyPage() {
           <a href="#hidden-gems">Hidden Gems</a>
           <a href="#similarity">Similarity</a>
           <a href="#project-signals">Project signals</a>
+          <a href="#readme-structure">README structure</a>
           <a href="#historical-events">Historical events</a>
           <a href="#confidence">Confidence</a>
           <a href="#maturity">Maturity</a>
@@ -212,6 +214,23 @@ export default function MethodologyPage() {
             <p>
               Missing rule inputs produce no card. Lower-activity wording stays neutral and never
               predicts abandonment or maintainer intent.
+            </p>
+          </section>
+          <section id="readme-structure">
+            <p className="eyebrow">README analysis / {README_ANALYSIS_VERSION}</p>
+            <h2>Structure, never a subjective grade</h2>
+            <p>
+              Bounded Git inspection selects the shallowest canonical README path and records its
+              blob size. Content is inspected only up to{" "}
+              {Math.round(README_ANALYSIS_LIMITS.maximumContentBytes / 1024)} KiB; larger or
+              unavailable blobs retain size evidence while structural fields stay unavailable.
+            </p>
+            <p>
+              ForgeRank counts Markdown headings, recognized status badges, installation-oriented
+              headings, and documentation links. At most{" "}
+              {README_ANALYSIS_LIMITS.maximumExposedSections} sanitized section titles are shown.
+              These signals describe documentation structure and never claim that documentation is
+              complete, correct, or high quality.
             </p>
           </section>
           <section id="historical-events">
