@@ -187,6 +187,15 @@ test("repository signals remain deterministic and evidence bounded", async ({ pa
   await expect(page.locator(".technology-panel")).toContainText("technology-detection-v2");
 });
 
+test("repository similarity exposes every deterministic evidence family", async ({ page }) => {
+  await page.goto("/r/facebook/react");
+  const similarity = page.locator("#similar");
+  await expect(similarity).toContainText("repository-similarity-v2");
+  await expect(similarity).toContainText("Shared description keywords:");
+  await expect(similarity).toContainText("Shared collections: Frontend Foundations");
+  await expect(similarity).toContainText("not semantic AI or a quality judgment");
+});
+
 test("repository rank history uses completed snapshot windows", async ({ page }) => {
   await page.goto("/r/sharkdp/bat");
   await expect(page.getByRole("heading", { name: "Global rank history" })).toBeVisible();

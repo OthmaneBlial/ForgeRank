@@ -26,6 +26,7 @@ import { summarizeRankMovementWindows } from "@/domain/ranking-history";
 import type { RepositoryScoreReasonTone } from "@/domain/repository";
 import { REPOSITORY_EVENT_VERSION, type RepositoryEventKind } from "@/domain/repository-events";
 import { deriveRepositorySignals, REPOSITORY_SIGNAL_VERSION } from "@/domain/repository-signals";
+import { REPOSITORY_SIMILARITY_VERSION } from "@/domain/similarity";
 
 export const dynamic = "force-dynamic";
 
@@ -635,11 +636,12 @@ export default async function RepositoryDetailPage({ params }: { params: RoutePa
           </section>
           <section id="similar" className="detail-section">
             <div className="detail-section-heading">
-              <p className="eyebrow">Similarity / deterministic evidence</p>
+              <p className="eyebrow">Similarity / {REPOSITORY_SIMILARITY_VERSION}</p>
               <h2>Related repositories</h2>
               <p>
-                Matches use shared language, classified topics, detected technologies, and lifecycle
-                only. The score is an evidence overlap—not semantic AI or a quality judgment.
+                Matches use shared language, classified topics, detected technologies, bounded
+                description keywords, curated collections, and lifecycle. The score is an evidence
+                overlap—not semantic AI or a quality judgment.
               </p>
             </div>
             {similarRepositories.length > 0 ? (
@@ -664,7 +666,7 @@ export default async function RepositoryDetailPage({ params }: { params: RoutePa
             ) : (
               <InsufficientData
                 action={false}
-                detail="No other indexed repository currently shares enough observed language, topic, technology, or lifecycle evidence."
+                detail="No other indexed repository currently shares enough observed language, topic, technology, description-keyword, collection, or lifecycle evidence."
               />
             )}
           </section>

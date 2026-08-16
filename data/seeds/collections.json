@@ -6,6 +6,12 @@
     "repositories": ["denoland/deno", "oven-sh/bun", "nodejs/node"]
   },
   {
+    "slug": "frontend-foundations",
+    "name": "Frontend Foundations",
+    "description": "Observed libraries and frameworks shaping component-driven web interfaces.",
+    "repositories": ["facebook/react", "vuejs/core", "sveltejs/svelte", "solidjs/solid"]
+  },
+  {
     "slug": "rust-developer-tools",
     "name": "Rust Developer Tools",
     "description": "Fast, thoughtful command-line and desktop tools built with Rust.",

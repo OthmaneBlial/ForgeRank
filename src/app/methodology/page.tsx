@@ -13,6 +13,11 @@ import { PageHeader } from "@/components/shell/page-header";
 import { README_ANALYSIS_LIMITS, README_ANALYSIS_VERSION } from "@/domain/readme-analysis";
 import { REPOSITORY_EVENT_THRESHOLDS, REPOSITORY_EVENT_VERSION } from "@/domain/repository-events";
 import {
+  REPOSITORY_SIMILARITY_MINIMUM_SCORE,
+  REPOSITORY_SIMILARITY_VERSION,
+  REPOSITORY_SIMILARITY_WEIGHTS,
+} from "@/domain/similarity";
+import {
   REPOSITORY_SIGNAL_THRESHOLDS,
   REPOSITORY_SIGNAL_VERSION,
 } from "@/domain/repository-signals";
@@ -150,13 +155,18 @@ export default function MethodologyPage() {
             </p>
           </section>
           <section id="similarity">
-            <p className="eyebrow">Similarity / deterministic overlap</p>
+            <p className="eyebrow">Similarity / {REPOSITORY_SIMILARITY_VERSION}</p>
             <h2>Related means shared observed evidence</h2>
             <p>
-              Similarity allocates 35 points to the same primary language, 30 to topic-set overlap,
-              25 to detected-technology overlap, and 10 to a shared known lifecycle. Missing fields
-              earn zero rather than redistributing their weight. Matches below 15 are not published,
-              and the result is not an AI semantic judgment.
+              Similarity allocates {REPOSITORY_SIMILARITY_WEIGHTS.language} points to the same
+              primary language, {REPOSITORY_SIMILARITY_WEIGHTS.topics} to topic-set overlap,{" "}
+              {REPOSITORY_SIMILARITY_WEIGHTS.technologies} to detected-technology overlap,{" "}
+              {REPOSITORY_SIMILARITY_WEIGHTS.descriptionKeywords} to bounded description-keyword
+              overlap, {REPOSITORY_SIMILARITY_WEIGHTS.collections} to curated-collection overlap,
+              and {REPOSITORY_SIMILARITY_WEIGHTS.maturity} to a shared known lifecycle. Missing
+              fields earn zero rather than redistributing their weight. Matches below{" "}
+              {REPOSITORY_SIMILARITY_MINIMUM_SCORE} are not published, and the result is not an AI
+              semantic judgment.
             </p>
           </section>
           <section id="project-signals">

@@ -3,7 +3,10 @@ import { and, asc, desc, eq, gte, ilike, inArray, isNotNull, lte, ne, or, sql } 
 import { analyzeDeveloperPortfolio } from "@/domain/developer-intelligence";
 import { applyDeveloperProfileEvents } from "@/domain/developer-profile";
 import type { Confidence } from "@/domain/confidence";
-import { calculateRepositorySimilarity } from "@/domain/similarity";
+import {
+  calculateRepositorySimilarity,
+  REPOSITORY_SIMILARITY_MINIMUM_SCORE,
+} from "@/domain/similarity";
 import { deriveRepositoryEvents } from "@/domain/repository-events";
 import { technologySlug } from "@/domain/technology/slug";
 import { formatObservationAge } from "@/domain/format";
@@ -187,14 +190,35 @@ async function getSimilarRepositories(repositoryId: string) {
     .where(eq(repositories.id, repositoryId))
     .limit(1);
   if (!target) return [];
-  const [candidates, topicRows, analyses] = await Promise.all([
+  const candidates = await database
+    .select()
+    .from(repositories)
+    .where(and(ne(repositories.id, repositoryId), isNotNull(repositories.lastSuccessfulFetchAt)))
+    .orderBy(
+      sql`${repositories.currentScore} desc nulls last`,
+      sql`${repositories.currentStars} desc nulls last`,
+      asc(repositories.fullName),
+    )
+    .limit(250);
+  const eligibleRepositoryIds = [repositoryId, ...candidates.map((candidate) => candidate.id)];
+  const [topicRows, analyses, collectionRows] = await Promise.all([
     database
       .select()
-      .from(repositories)
-      .where(and(ne(repositories.id, repositoryId), isNotNull(repositories.lastSuccessfulFetchAt)))
-      .limit(250),
-    database.select().from(repositoryTopics),
-    database.select().from(gitAnalyses).orderBy(desc(gitAnalyses.analyzedAt)),
+      .from(repositoryTopics)
+      .where(inArray(repositoryTopics.repositoryId, eligibleRepositoryIds)),
+    database
+      .select()
+      .from(gitAnalyses)
+      .where(inArray(gitAnalyses.repositoryId, eligibleRepositoryIds))
+      .orderBy(desc(gitAnalyses.analyzedAt)),
+    database
+      .select({
+        repositoryId: collectionRepositories.repositoryId,
+        collectionName: collections.name,
+      })
+      .from(collectionRepositories)
+      .innerJoin(collections, eq(collections.slug, collectionRepositories.collectionSlug))
+      .where(inArray(collectionRepositories.repositoryId, eligibleRepositoryIds)),
   ]);
   const topicsByRepository = new Map<string, string[]>();
   for (const row of topicRows)
@@ -210,8 +234,15 @@ async function getSimilarRepositories(repositoryId: string) {
         (analysis.detectedTechnologies ?? []).map((technology) => technology.name),
       );
   }
+  const collectionsByRepository = new Map<string, string[]>();
+  for (const row of collectionRows)
+    collectionsByRepository.set(row.repositoryId, [
+      ...(collectionsByRepository.get(row.repositoryId) ?? []),
+      row.collectionName,
+    ]);
   const targetTopics = topicsByRepository.get(repositoryId) ?? [];
   const targetTechnologies = technologiesByRepository.get(repositoryId) ?? [];
+  const targetCollections = collectionsByRepository.get(repositoryId) ?? [];
   return candidates
     .map((candidate) => {
       const similarity = calculateRepositorySimilarity({
@@ -221,6 +252,10 @@ async function getSimilarRepositories(repositoryId: string) {
         candidateTopics: topicsByRepository.get(candidate.id) ?? [],
         technologies: targetTechnologies,
         candidateTechnologies: technologiesByRepository.get(candidate.id) ?? [],
+        description: target.description,
+        candidateDescription: candidate.description,
+        collections: targetCollections,
+        candidateCollections: collectionsByRepository.get(candidate.id) ?? [],
         maturity: target.maturity,
         candidateMaturity: candidate.maturity,
       });
@@ -230,7 +265,7 @@ async function getSimilarRepositories(repositoryId: string) {
         similarityEvidence: similarity.evidence,
       };
     })
-    .filter((candidate) => candidate.similarity >= 15)
+    .filter((candidate) => candidate.similarity >= REPOSITORY_SIMILARITY_MINIMUM_SCORE)
     .sort(
       (left, right) =>
         right.similarity - left.similarity ||

@@ -12,7 +12,7 @@ Acceptance: bounded Git enrichment, activity/history charts, contributor concent
 
 ## Discovery and ecosystems
 
-Acceptance: defensible trending modes, Hidden Gems, revival detection, language/topic aggregates, curated collections, similarity, and daily/weekly reports are snapshot-backed. Status: **implemented for available evidence**; eight explicit tested discovery modes now include retained-score Most Improved and neutrally worded Cooling Giants, while Git analysis v2 persists bounded prior quiet intervals so Revived classification can actually occur after sustained renewed activity. Hidden Gems, deterministic topics, repository similarity, versioned language-ecosystem history, and coverage-bounded daily/weekly reports also work. Results remain visibly withheld until naturally accumulated windows satisfy their gates.
+Acceptance: defensible trending modes, Hidden Gems, revival detection, language/topic aggregates, curated collections, similarity, and daily/weekly reports are snapshot-backed. Status: **implemented for available evidence**; eight explicit tested discovery modes now include retained-score Most Improved and neutrally worded Cooling Giants, while Git analysis v2 persists bounded prior quiet intervals so Revived classification can actually occur after sustained renewed activity. Hidden Gems, deterministic topics, versioned similarity across language, topics, technologies, bounded description keywords, curated collections, and lifecycle, versioned language-ecosystem history, and coverage-bounded daily/weekly reports also work. Results remain visibly withheld until naturally accumulated windows satisfy their gates.
 
 ## Developer intelligence
 

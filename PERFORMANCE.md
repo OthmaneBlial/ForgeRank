@@ -30,13 +30,13 @@ Measured 2026-08-16 with local headless Chromium against the copied `next build`
 
 | View                        |  TTFB |    LCP |    CLS |    DCL |   Load | JS transfer | JS decoded | DOM nodes | Long tasks |
 | --------------------------- | ----: | -----: | -----: | -----: | -----: | ----------: | ---------: | --------: | ---------: |
-| Desktop home                | 38 ms | 220 ms | 0.0060 | 150 ms | 238 ms |   159.2 KiB |  560.3 KiB |       714 |       0 ms |
-| Desktop repository rankings | 49 ms | 572 ms | 0.0006 | 125 ms | 223 ms |   158.1 KiB |  559.5 KiB |       420 |       0 ms |
-| Desktop discovery modes     | 37 ms | 264 ms | 0.0415 |  74 ms | 247 ms |   158.1 KiB |  559.5 KiB |       183 |       0 ms |
-| Desktop repository detail   | 96 ms | 644 ms | 0.0008 | 193 ms | 240 ms |   159.8 KiB |  562.6 KiB |       734 |       0 ms |
-| Mobile home                 | 48 ms | 260 ms | 0.0000 | 144 ms | 261 ms |   159.2 KiB |  560.3 KiB |       714 |       0 ms |
-| Mobile repository rankings  | 31 ms | 416 ms | 0.0000 |  98 ms | 165 ms |   158.1 KiB |  559.5 KiB |       420 |       0 ms |
-| Mobile discovery modes      | 20 ms | 124 ms | 0.0000 |  80 ms | 128 ms |   158.1 KiB |  559.5 KiB |       183 |       0 ms |
-| Mobile repository detail    | 48 ms | 152 ms | 0.0000 | 112 ms | 160 ms |   159.8 KiB |  562.6 KiB |       734 |      86 ms |
+| Desktop home                | 34 ms | 152 ms | 0.0060 |  97 ms | 126 ms |   159.2 KiB |  560.3 KiB |       714 |       0 ms |
+| Desktop repository rankings | 39 ms | 148 ms | 0.0008 | 128 ms | 129 ms |   159.4 KiB |  561.4 KiB |       421 |       0 ms |
+| Desktop discovery modes     | 14 ms | 128 ms | 0.0415 |  60 ms |  88 ms |   158.1 KiB |  559.5 KiB |       183 |       0 ms |
+| Desktop repository detail   | 45 ms | 436 ms | 0.0008 |  97 ms | 125 ms |   161.1 KiB |  564.5 KiB |       735 |       0 ms |
+| Mobile home                 | 27 ms | 140 ms | 0.0000 |  76 ms | 106 ms |   159.2 KiB |  560.3 KiB |       714 |       0 ms |
+| Mobile repository rankings  | 20 ms | 364 ms | 0.0000 |  62 ms | 108 ms |   158.1 KiB |  559.5 KiB |       420 |       0 ms |
+| Mobile discovery modes      | 11 ms |  80 ms | 0.0000 |  49 ms |  77 ms |   158.1 KiB |  559.5 KiB |       183 |       0 ms |
+| Mobile repository detail    | 27 ms | 408 ms | 0.0000 |  70 ms | 113 ms |   159.8 KiB |  562.6 KiB |       734 |       0 ms |
 
 These values establish a local regression baseline only. They should not be presented as production-user Core Web Vitals until field telemetry exists.

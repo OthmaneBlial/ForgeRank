@@ -73,7 +73,7 @@ async function verify(databaseUrl: string): Promise<void> {
     await migrateDatabase();
     await migrateDatabase();
     const seeded = await seed.seedIdentifiers();
-    assert.deepEqual(seeded, { repositories: 62, developers: 10, collections: 4, topics: 19 });
+    assert.deepEqual(seeded, { repositories: 62, developers: 10, collections: 5, topics: 19 });
 
     const database = await getDatabase();
     assert.equal(getDatabaseDriver(), "postgres");
@@ -88,7 +88,7 @@ async function verify(databaseUrl: string): Promise<void> {
       .from(schema.collections);
     assert.equal(repositoryCount?.count, 62);
     assert.equal(developerCount?.count, 10);
-    assert.equal(collectionCount?.count, 4);
+    assert.equal(collectionCount?.count, 5);
 
     const observedAt = new Date();
     let matrixRepositoryId = "";
