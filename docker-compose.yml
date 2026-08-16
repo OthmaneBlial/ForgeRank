@@ -1,0 +1,105 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: forgerank
+      POSTGRES_USER: forgerank
+      POSTGRES_PASSWORD: ${FORGERANK_POSTGRES_PASSWORD:-forgerank}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forgerank -d forgerank"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      target: operations
+    command: ["pnpm", "db:migrate"]
+    environment:
+      DATABASE_URL: postgresql://forgerank:${FORGERANK_POSTGRES_PASSWORD:-forgerank}@postgres:5432/forgerank
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    environment:
+      DATABASE_URL: postgresql://forgerank:${FORGERANK_POSTGRES_PASSWORD:-forgerank}@postgres:5432/forgerank
+      DATABASE_POOL_SIZE: ${DATABASE_POOL_SIZE:-10}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      FORGERANK_CONTACT_URL: ${FORGERANK_CONTACT_URL:-http://localhost:3000/data-policy}
+      FORGERANK_TRUST_PROXY: ${FORGERANK_TRUST_PROXY:-0}
+      FORGERANK_RATE_LIMIT_SALT: ${FORGERANK_RATE_LIMIT_SALT:-forgerank-local-rate-limit-v1}
+      FORGERANK_ENABLE_ADMIN: ${FORGERANK_ENABLE_ADMIN:-0}
+      FORGERANK_ADMIN_USERNAME: ${FORGERANK_ADMIN_USERNAME:-}
+      FORGERANK_ADMIN_PASSWORD: ${FORGERANK_ADMIN_PASSWORD:-}
+      GIT_CACHE_DIR: /var/lib/forgerank/git-cache
+    volumes:
+      - git-cache:/var/lib/forgerank/git-cache:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    stop_grace_period: 20s
+
+  worker:
+    build:
+      context: .
+      target: operations
+    command: ["pnpm", "worker"]
+    environment:
+      DATABASE_URL: postgresql://forgerank:${FORGERANK_POSTGRES_PASSWORD:-forgerank}@postgres:5432/forgerank
+      DATABASE_POOL_SIZE: ${DATABASE_POOL_SIZE:-10}
+      FORGERANK_CONTACT_URL: ${FORGERANK_CONTACT_URL:-http://localhost:3000/data-policy}
+      FETCH_CONCURRENCY: ${FETCH_CONCURRENCY:-2}
+      MIN_REQUEST_INTERVAL_MS: ${MIN_REQUEST_INTERVAL_MS:-5000}
+      MAX_RETRIES: ${MAX_RETRIES:-2}
+      HTTP_CACHE_TTL_SECONDS: ${HTTP_CACHE_TTL_SECONDS:-21600}
+      HOURLY_CRAWL_BUDGET: ${HOURLY_CRAWL_BUDGET:-60}
+      DAILY_CRAWL_BUDGET: ${DAILY_CRAWL_BUDGET:-500}
+      REFRESH_SCHEDULE_BATCH_SIZE: ${REFRESH_SCHEDULE_BATCH_SIZE:-25}
+      REFRESH_SCHEDULER_INTERVAL_MS: ${REFRESH_SCHEDULER_INTERVAL_MS:-900000}
+      GIT_CACHE_MAX_GB: ${GIT_CACHE_MAX_GB:-10}
+      GIT_CACHE_DIR: /var/lib/forgerank/git-cache
+    volumes:
+      - git-cache:/var/lib/forgerank/git-cache
+      - http-cache:/var/lib/forgerank/http-cache
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "pnpm", "forge", "worker-health", "--max-age", "90"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+volumes:
+  postgres-data:
+  git-cache:
+  http-cache:

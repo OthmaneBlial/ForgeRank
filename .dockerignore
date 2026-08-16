@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+data/*
+!data/seeds/
+!data/seeds/**
+artifacts
+playwright-report
+test-results
+.env*

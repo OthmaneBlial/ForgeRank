@@ -1,0 +1,1 @@
+ALTER TABLE "git_analyses" ADD COLUMN "readme_analysis" jsonb;

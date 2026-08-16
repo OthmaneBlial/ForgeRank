@@ -1,0 +1,2 @@
+ALTER TABLE "repositories" ADD COLUMN "score_reasons" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "repository_snapshots" ADD COLUMN "score_reasons" jsonb DEFAULT '[]'::jsonb NOT NULL;

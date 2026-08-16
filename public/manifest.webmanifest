@@ -1,0 +1,19 @@
+{
+  "name": "ForgeRank — Open-source intelligence",
+  "short_name": "ForgeRank",
+  "description": "Discover what matters in open source.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#10110f",
+  "theme_color": "#10110f",
+  "scope": "/",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/maskable-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Trending", "url": "/trending" },
+    { "name": "Search index", "url": "/repositories" },
+    { "name": "Watchlist", "url": "/watchlist" }
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "git_analyses" ADD COLUMN "previous_dormant_period_days" integer;

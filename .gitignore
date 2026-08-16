@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.local
+data/*
+!data/seeds/
+!data/seeds/**
+*.log
+*.tsbuildinfo
+.DS_Store
+drizzle/meta/

@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "modern-runtime-lab",
+    "name": "Modern JavaScript Runtimes",
+    "description": "The runtimes reshaping server-side JavaScript and TypeScript.",
+    "repositories": ["denoland/deno", "oven-sh/bun", "nodejs/node"]
+  },
+  {
+    "slug": "rust-developer-tools",
+    "name": "Rust Developer Tools",
+    "description": "Fast, thoughtful command-line and desktop tools built with Rust.",
+    "repositories": [
+      "sharkdp/bat",
+      "BurntSushi/ripgrep",
+      "starship/starship",
+      "helix-editor/helix",
+      "tauri-apps/tauri"
+    ]
+  },
+  {
+    "slug": "python-speed-layer",
+    "name": "Python's Speed Layer",
+    "description": "Projects making Python packaging, linting, APIs, and data work faster.",
+    "repositories": ["astral-sh/ruff", "astral-sh/uv", "fastapi/fastapi", "duckdb/duckdb"]
+  },
+  {
+    "slug": "open-source-observability",
+    "name": "Open-source Observability",
+    "description": "The core projects behind metrics, telemetry, dashboards, and error visibility.",
+    "repositories": [
+      "prometheus/prometheus",
+      "grafana/grafana",
+      "getsentry/sentry",
+      "open-telemetry/opentelemetry-specification"
+    ]
+  }
+]

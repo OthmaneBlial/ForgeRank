@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a reproducible ForgeRank defect.
+title: "[bug] "
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction
+      description: Include the route, commands, and data state without secrets.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: ForgeRank revision
