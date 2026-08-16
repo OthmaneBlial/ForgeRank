@@ -1810,6 +1810,7 @@ main {
   background: var(--positive);
 }
 
+.technology-panel > p,
 .quality-panel > p {
   margin: 12px 0 0;
   color: var(--ink-faint);

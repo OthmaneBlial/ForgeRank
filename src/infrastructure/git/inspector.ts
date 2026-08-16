@@ -9,6 +9,9 @@ import {
   detectPrimaryLanguage,
   detectQualitySignals,
   detectTechnologies,
+  REPOSITORY_QUALITY_SIGNAL_VERSION,
+  TECHNOLOGY_DETECTION_VERSION,
+  TECHNOLOGY_MANIFEST_CANDIDATES,
 } from "@/domain/technology/analyze-tree";
 import { calculatePreviousDormantPeriodDays } from "@/domain/git-activity";
 import { getDatabase } from "@/infrastructure/db/client";
@@ -23,17 +26,8 @@ import {
   removeGitCacheRepository,
 } from "./cache-manager";
 
-export const GIT_ANALYSIS_VERSION = "git-analysis-v3";
+export const GIT_ANALYSIS_VERSION = "git-analysis-v4";
 const MAX_MANIFEST_BYTES = 512 * 1024;
-const manifestCandidates = [
-  "package.json",
-  "Cargo.toml",
-  "pyproject.toml",
-  "go.mod",
-  "pom.xml",
-  "build.gradle",
-  "build.gradle.kts",
-];
 const locks = new Map<string, Promise<GitInspectionResult>>();
 
 export type GitInspectionResult = {
@@ -178,7 +172,7 @@ export class GitInspector {
     );
     const { language: primaryLanguage } = detectPrimaryLanguage(tree.lines);
     const manifests: Record<string, string> = {};
-    for (const candidate of manifestCandidates) {
+    for (const candidate of TECHNOLOGY_MANIFEST_CANDIDATES) {
       if (!tree.lines.includes(candidate)) continue;
       try {
         const content = await runGit(["--git-dir", repositoryPath, "show", `HEAD:${candidate}`], {
@@ -252,7 +246,9 @@ export class GitInspector {
         concentrationIndex: String(concentrationIndex),
         tagCount,
         detectedTechnologies: technologies,
+        technologyDetectionVersion: TECHNOLOGY_DETECTION_VERSION,
         qualitySignals,
+        qualitySignalsVersion: REPOSITORY_QUALITY_SIGNAL_VERSION,
         readmeAnalysis,
         analysisVersion: GIT_ANALYSIS_VERSION,
       });

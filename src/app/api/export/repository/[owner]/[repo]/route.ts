@@ -47,7 +47,7 @@ export async function GET(request: Request, { params }: { params: RouteParams })
     return Response.json({ error: "Supported formats are json and csv." }, { status: 400 });
 
   const body = {
-    schemaVersion: "forgerank-repository-export-v2",
+    schemaVersion: "forgerank-repository-export-v3",
     scope: "ForgeRank indexed universe",
     repository: {
       fullName: repository.fullName,
@@ -78,7 +78,9 @@ export async function GET(request: Request, { params }: { params: RouteParams })
           topContributorShare: gitAnalysis.topContributorShare,
           topThreeContributorShare: gitAnalysis.topThreeContributorShare,
           detectedTechnologies: gitAnalysis.detectedTechnologies,
+          technologyDetectionVersion: gitAnalysis.technologyDetectionVersion,
           qualitySignals: gitAnalysis.qualitySignals,
+          qualitySignalsVersion: gitAnalysis.qualitySignalsVersion,
           readmeAnalysis: gitAnalysis.readmeAnalysis,
           analysisVersion: gitAnalysis.analysisVersion,
         }

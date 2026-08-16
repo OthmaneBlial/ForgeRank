@@ -16,6 +16,7 @@ import {
 
 import type { RepositoryScoreReason } from "@/domain/repository";
 import type { ReadmeAnalysis } from "@/domain/readme-analysis";
+import type { RepositoryQualitySignals } from "@/domain/technology/analyze-tree";
 
 export const repositories = pgTable(
   "repositories",
@@ -164,7 +165,9 @@ export const gitAnalyses = pgTable(
       jsonb("detected_technologies").$type<
         Array<{ name: string; category: string; confidence: string; evidence: string }>
       >(),
-    qualitySignals: jsonb("quality_signals").$type<Record<string, boolean | null>>(),
+    technologyDetectionVersion: text("technology_detection_version"),
+    qualitySignals: jsonb("quality_signals").$type<RepositoryQualitySignals>(),
+    qualitySignalsVersion: text("quality_signals_version"),
     readmeAnalysis: jsonb("readme_analysis").$type<ReadmeAnalysis>(),
     analysisVersion: text("analysis_version").notNull(),
   },

@@ -22,7 +22,7 @@ It observes only policy-permitted public HTML documents, normal public Git trans
 - Cadence-driven hot/active/normal/cold refresh scheduling with deterministic priority, deduplication, cooldowns, and persistent privacy-hashed intake limits.
 - Versioned fixture-tested repository and public-profile HTML parsers with provenance and structural validation.
 - Safe shallow/blobless Git inspection using argument arrays—never interpolated shell commands.
-- Git-derived activity, privacy-safe author concentration, primary-language detection, quality signals, and technology detection.
+- Git-derived activity, privacy-safe author concentration, primary-language detection, all eleven specified repository-structure signals, and a pluggable confidence-tagged technology detector registry spanning Node, Python, Rust, Go, JVM, Ruby, PHP, Dart/Flutter, Docker, and Docker Compose evidence.
 - Bounded README structure analysis for observed blob size, headings, recognized badges, installation guidance, and documentation links, with no subjective quality grade.
 - Versioned ForgeRank Signals that translate maintenance cadence, lifecycle, contributor structure, snapshot momentum, repository structures, and visible Git tags into factual evidence cards without predicting quality or maintainer intent.
 - Evidence-weighted related repositories plus browseable deterministic technology ecosystems.

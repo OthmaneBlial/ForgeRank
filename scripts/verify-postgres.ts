@@ -139,6 +139,21 @@ async function verify(databaseUrl: string): Promise<void> {
       previousDormantPeriodDays: 210,
       uniqueAuthors90d: 5,
       tagCount: 13,
+      technologyDetectionVersion: "technology-detection-v2",
+      qualitySignals: {
+        readme: true,
+        license: true,
+        contributing: true,
+        codeOfConduct: true,
+        security: true,
+        tests: true,
+        ci: true,
+        docker: false,
+        releaseAutomation: true,
+        dependencyManagement: true,
+        documentation: true,
+      },
+      qualitySignalsVersion: "repository-quality-signals-v2",
       readmeAnalysis: {
         path: "README.md",
         sizeBytes: 4_096,
@@ -165,6 +180,11 @@ async function verify(databaseUrl: string): Promise<void> {
     assert.ok(detail.repositoryEvents.some((event) => event.kind === "ACTIVITY_RESUMED"));
     assert.ok(detail.repositoryEvents.some((event) => event.kind === "NEW_TAGS_OBSERVED"));
     assert.equal(detail.gitAnalysis?.readmeAnalysis?.hasInstallationSection, true);
+    assert.equal(detail.gitAnalysis?.technologyDetectionVersion, "technology-detection-v2");
+    assert.equal(detail.gitAnalysis?.qualitySignals?.releaseAutomation, true);
+    assert.equal(detail.gitAnalysis?.qualitySignals?.dependencyManagement, true);
+    assert.equal(detail.gitAnalysis?.qualitySignals?.documentation, true);
+    assert.equal(detail.gitAnalysis?.qualitySignalsVersion, "repository-quality-signals-v2");
     const matrix = await momentumMatrix.getMomentumMatrixReadModel(
       {
         language: "TypeScript",

@@ -66,7 +66,7 @@ export async function recalculateRepository(repositoryId: string): Promise<void>
   const daysSinceLastCommit = gitAnalysis?.latestCommitAt
     ? Math.floor((Date.now() - gitAnalysis.latestCommitAt.getTime()) / (24 * 60 * 60 * 1_000))
     : null;
-  const quality = gitAnalysis?.qualitySignals ?? {};
+  const quality = gitAnalysis?.qualitySignals;
   const confidence = repository.metadataConfidence as Confidence;
   const score = calculateRepositoryScore({
     stars: repository.currentStars,
@@ -78,10 +78,10 @@ export async function recalculateRepository(repositoryId: string): Promise<void>
     daysSinceLastCommit,
     uniqueAuthors90d: gitAnalysis?.uniqueAuthors90d ?? null,
     topContributorShare: numeric(gitAnalysis?.topContributorShare ?? null),
-    hasReadme: quality.readme ?? null,
-    hasLicense: repository.license !== null || quality.license === true,
-    hasTests: quality.tests ?? null,
-    hasCi: quality.ci ?? null,
+    hasReadme: quality?.readme ?? null,
+    hasLicense: repository.license !== null || quality?.license === true,
+    hasTests: quality?.tests ?? null,
+    hasCi: quality?.ci ?? null,
     isFork: repository.isFork,
     isArchived: repository.isArchived,
     anomalyCount: recentTrend.anomaly ? 1 : 0,

@@ -17,11 +17,11 @@ The dimension sum is multiplied by the observation confidence factor: 1.00, 0.92
 
 Every calculation also produces exactly one structured reason for each dimension. A reason records its dimension, a `POSITIVE`, `NEUTRAL`, `CAUTION`, or `MISSING` status, a concise summary, and the raw observed inputs used in that explanation. The current repository projection and latest repository snapshot persist these reasons together with the score version. Repository pages display the reasons, confidence multiplier, snapshot time, and dimension values; older snapshots created before this contract retain an empty reason list rather than receiving reconstructed explanations.
 
-File-presence signals describe whether expected repository structures were observed. They never claim that code is correct, secure, or high quality. Git-author metrics likewise remain separate from public account identity.
+Repository-quality-signals-v2 records README, license, contributing, code-of-conduct, security, tests, CI, Docker, release-automation, dependency-management, and dedicated-documentation presence. These values remain evidence inputs rather than standalone scores: repository-v1 deliberately continues to use only README, license, tests, and CI in its existing quality share. Expanding detection therefore does not silently change historical scoring semantics. File presence never claims that code is correct, secure, or high quality. Git-author metrics likewise remain separate from public account identity.
 
 ## README structure v1
 
-Git analysis v3 selects the shallowest canonical README path, records the exact observed blob size, and inspects at most 512 KiB of content. README structure v1 counts Markdown headings, recognized status badges, installation-oriented headings, and documentation links, while exposing at most 20 sanitized heading titles. If a blob exceeds the cap or cannot be read from a partial clone, size evidence may remain while content-derived fields stay unavailable. These fields are structural observations, never a documentation-quality score.
+Git analysis v4 retains the v3 README contract: it selects the shallowest canonical README path, records the exact observed blob size, and inspects at most 512 KiB of content. README structure v1 counts Markdown headings, recognized status badges, installation-oriented headings, and documentation links, while exposing at most 20 sanitized heading titles. If a blob exceeds the cap or cannot be read from a partial clone, size evidence may remain while content-derived fields stay unavailable. These fields are structural observations, never a documentation-quality score.
 
 ## Trending v1
 

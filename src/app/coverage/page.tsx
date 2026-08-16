@@ -76,7 +76,9 @@ export default async function CoveragePage() {
             <p className="eyebrow">Public data health</p>
             <h2>Freshness without internal exposure</h2>
           </div>
-          <p>These values describe ForgeRank&apos;s own retained observations and policy cadence.</p>
+          <p>
+            These values describe ForgeRank&apos;s own retained observations and policy cadence.
+          </p>
         </div>
         <div className="coverage-grid">
           <Metric
@@ -126,22 +128,25 @@ export default async function CoveragePage() {
             <span>Index model</span>
             <strong>Relevance-driven</strong>
             <p>
-              Curated seeds, public discovery where permitted, user submissions, and collection expansion.
-              ForgeRank does not attempt to crawl all of GitHub.
+              Curated seeds, public discovery where permitted, user submissions, and collection
+              expansion. ForgeRank does not attempt to crawl all of GitHub.
             </p>
           </div>
           <div>
             <span>Historical horizon</span>
             <strong>{coverage.snapshots > 0 ? "Snapshots accumulating" : "Not started"}</strong>
             <p>
-              Weekly velocity needs 7+ days, monthly momentum 30+ days, and sustained acceleration 90+ days.
-              Missing windows stay unavailable.
+              Weekly velocity needs 7+ days, monthly momentum 30+ days, and sustained acceleration
+              90+ days. Missing windows stay unavailable.
             </p>
           </div>
           <div>
             <span>Transparency</span>
             <strong>Indexed universe only</strong>
-            <p>Every rank is scoped to the entities actually observed, scored, and eligible for that view.</p>
+            <p>
+              Every rank is scoped to the entities actually observed, scored, and eligible for that
+              view.
+            </p>
           </div>
         </div>
         <Link className="button button-secondary" href="/methodology">

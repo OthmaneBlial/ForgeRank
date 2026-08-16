@@ -159,7 +159,7 @@ export function deriveRepositorySignals(
         title: "Repository structures",
         status: detected + "/" + available.length + " detected",
         detail:
-          "README, license, contribution, security, test, CI, and container file presence are deterministic signals—not proof of correctness or security.",
+          "README, license, community guidance, tests, CI, containers, release automation, dependency management, and dedicated documentation are file-presence signals—not proof of correctness or security.",
         tone:
           detected / available.length >=
           REPOSITORY_SIGNAL_THRESHOLDS.positiveRepositoryStructureShare

@@ -178,6 +178,13 @@ test("repository signals remain deterministic and evidence bounded", async ({ pa
   await expect(readme).toContainText("README.md");
   await expect(readme).toContainText("Installation section: detected");
   await expect(readme).toContainText("not a documentation-quality score");
+  const structures = page.locator(".quality-panel");
+  await expect(page.getByRole("heading", { name: "Observed repository structures" })).toBeVisible();
+  await expect(structures).toContainText("Release automation detected");
+  await expect(structures).toContainText("Dependency management detected");
+  await expect(structures).toContainText("Dedicated documentation detected");
+  await expect(structures).toContainText("repository-quality-signals-v2");
+  await expect(page.locator(".technology-panel")).toContainText("technology-detection-v2");
 });
 
 test("repository rank history uses completed snapshot windows", async ({ page }) => {
@@ -212,10 +219,15 @@ test("repository timeline exposes only derived retained-evidence events", async 
   expect(response.status()).toBe(200);
   const exported = (await response.json()) as {
     schemaVersion: string;
-    gitAnalysis: { readmeAnalysis: { version: string; sectionCount: number } };
+    gitAnalysis: {
+      readmeAnalysis: { version: string; sectionCount: number };
+      technologyDetectionVersion: string;
+      qualitySignalsVersion: string;
+      qualitySignals: Record<string, boolean>;
+    };
     events: Array<{ kind: string; version: string }>;
   };
-  expect(exported.schemaVersion).toBe("forgerank-repository-export-v2");
+  expect(exported.schemaVersion).toBe("forgerank-repository-export-v3");
   expect(exported.events.map((event) => event.kind)).toEqual(
     expect.arrayContaining(["STAR_MILESTONE", "ACTIVITY_RESUMED", "NEW_TAGS_OBSERVED"]),
   );
@@ -223,6 +235,15 @@ test("repository timeline exposes only derived retained-evidence events", async 
   expect(exported.gitAnalysis.readmeAnalysis).toMatchObject({
     version: "readme-structure-v1",
     sectionCount: 8,
+  });
+  expect(exported.gitAnalysis).toMatchObject({
+    technologyDetectionVersion: "technology-detection-v2",
+    qualitySignalsVersion: "repository-quality-signals-v2",
+    qualitySignals: {
+      releaseAutomation: true,
+      dependencyManagement: true,
+      documentation: true,
+    },
   });
 });
 

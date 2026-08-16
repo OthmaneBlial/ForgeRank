@@ -17,6 +17,10 @@ import {
   REPOSITORY_SIGNAL_VERSION,
 } from "@/domain/repository-signals";
 import { MATURITY_THRESHOLDS } from "@/domain/scoring/maturity";
+import {
+  REPOSITORY_QUALITY_SIGNAL_VERSION,
+  TECHNOLOGY_DETECTION_VERSION,
+} from "@/domain/technology/analyze-tree";
 
 const repositoryDimensions = [
   [
@@ -54,6 +58,7 @@ export default function MethodologyPage() {
           <a href="#hidden-gems">Hidden Gems</a>
           <a href="#similarity">Similarity</a>
           <a href="#project-signals">Project signals</a>
+          <a href="#repository-structures">Repository structures</a>
           <a href="#readme-structure">README structure</a>
           <a href="#historical-events">Historical events</a>
           <a href="#confidence">Confidence</a>
@@ -198,8 +203,8 @@ export default function MethodologyPage() {
                 <strong>Repository structures</strong>
                 <span>File presence only</span>
                 <p>
-                  Supported README, license, contribution, security, tests, CI, and container paths
-                  are counted without claiming correctness or security.
+                  Supported community, automation, dependency, documentation, test, CI, and
+                  container paths are counted without claiming correctness or security.
                 </p>
               </div>
               <div>
@@ -214,6 +219,64 @@ export default function MethodologyPage() {
             <p>
               Missing rule inputs produce no card. Lower-activity wording stays neutral and never
               predicts abandonment or maintainer intent.
+            </p>
+          </section>
+          <section id="repository-structures">
+            <p className="eyebrow">
+              Repository-file evidence / {REPOSITORY_QUALITY_SIGNAL_VERSION}
+            </p>
+            <h2>Presence is observable; quality is not inferred</h2>
+            <div className="method-dimensions">
+              <div>
+                <strong>Project basics</strong>
+                <span>README · license</span>
+                <p>
+                  Canonical filenames are matched case-insensitively anywhere in the bounded tree.
+                </p>
+              </div>
+              <div>
+                <strong>Community guidance</strong>
+                <span>Contributing · conduct · security</span>
+                <p>Recognized policy files indicate presence only, never compliance or safety.</p>
+              </div>
+              <div>
+                <strong>Engineering structure</strong>
+                <span>Tests · CI · Docker</span>
+                <p>
+                  Known paths and filenames are detected after generated and vendored trees are
+                  excluded.
+                </p>
+              </div>
+              <div>
+                <strong>Release automation</strong>
+                <span>Named workflows and release tools</span>
+                <p>
+                  Release/publish workflows, Changesets, release-please, semantic-release,
+                  GoReleaser, and Cargo release configuration are explicit evidence.
+                </p>
+              </div>
+              <div>
+                <strong>Dependency management</strong>
+                <span>Manifests and lockfiles</span>
+                <p>
+                  Node, Python, Rust, Go, JVM, Ruby, PHP, and Dart dependency files are recognized.
+                </p>
+              </div>
+              <div>
+                <strong>Dedicated documentation</strong>
+                <span>Docs trees and site configs</span>
+                <p>
+                  A README alone does not satisfy this separate signal; docs paths or recognized
+                  documentation configuration must exist.
+                </p>
+              </div>
+            </div>
+            <p>
+              Technology evidence uses {TECHNOLOGY_DETECTION_VERSION}, a registry of pluggable
+              detectors. It covers package.json, pyproject.toml, requirements.txt, Cargo.toml,
+              go.mod, pom.xml, Gradle, Gemfile, composer.json, pubspec.yaml, Dockerfiles, and Docker
+              Compose. Bounded manifest content can raise a specific framework signal, such as
+              Flutter, but absent content is never guessed.
             </p>
           </section>
           <section id="readme-structure">

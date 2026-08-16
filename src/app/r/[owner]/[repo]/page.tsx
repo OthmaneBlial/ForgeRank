@@ -31,6 +31,20 @@ export const dynamic = "force-dynamic";
 
 type RouteParams = Promise<{ owner: string; repo: string }>;
 
+const qualitySignalLabels: Record<string, string> = {
+  readme: "README",
+  license: "License",
+  contributing: "Contributing guide",
+  codeOfConduct: "Code of conduct",
+  security: "Security policy",
+  tests: "Tests",
+  ci: "CI",
+  docker: "Docker",
+  releaseAutomation: "Release automation",
+  dependencyManagement: "Dependency management",
+  documentation: "Dedicated documentation",
+};
+
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { owner, repo } = await params;
   return {
@@ -528,6 +542,10 @@ export default async function RepositoryDetailPage({ params }: { params: RoutePa
                     </span>
                   ))}
                 </div>
+                <p>
+                  {gitAnalysis.technologyDetectionVersion ?? "Detector version unavailable"} ·
+                  Registry-based manifest and repository-file evidence with explicit confidence.
+                </p>
               </div>
             )}
             {gitAnalysis?.readmeAnalysis && (
@@ -598,18 +616,19 @@ export default async function RepositoryDetailPage({ params }: { params: RoutePa
             )}
             {gitAnalysis?.qualitySignals && (
               <div className="quality-panel">
-                <h3>Repository signals</h3>
+                <h3>Observed repository structures</h3>
                 <div>
                   {Object.entries(gitAnalysis.qualitySignals).map(([signal, detected]) => (
                     <span key={signal} className={detected ? "detected" : "not-detected"}>
                       <i />
-                      {signal.replace(/([A-Z])/g, " $1")}
+                      {qualitySignalLabels[signal] ?? signal.replace(/([A-Z])/g, " $1")}
                       {detected ? " detected" : " not detected"}
                     </span>
                   ))}
                 </div>
                 <p>
-                  File presence is evidence, not a claim that the project is secure or high quality.
+                  {gitAnalysis.qualitySignalsVersion ?? "Detector version unavailable"} · File
+                  presence is evidence, not a claim that the project is secure or high quality.
                 </p>
               </div>
             )}

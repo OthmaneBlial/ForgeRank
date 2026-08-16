@@ -8,6 +8,11 @@ import { recalculateDeveloper } from "@/application/recalculate-developer";
 import { recalculateRepository } from "@/application/recalculate-repository";
 import { refreshRepositoryRankings } from "@/application/refresh-rankings";
 import { seedIdentifiers } from "@/application/seed";
+import {
+  REPOSITORY_QUALITY_SIGNAL_VERSION,
+  TECHNOLOGY_DETECTION_VERSION,
+  type RepositoryQualitySignals,
+} from "@/domain/technology/analyze-tree";
 import { closeDatabase, getDatabase } from "@/infrastructure/db/client";
 import { persistDeveloperSnapshot } from "@/infrastructure/db/developer-store";
 import { migrateDatabase } from "@/infrastructure/db/migrate";
@@ -24,6 +29,19 @@ const fixtureDirectory = path.resolve(process.cwd(), "data", "e2e-pglite");
 const configuredDirectory = process.env.FORGERANK_DATA_DIR
   ? path.resolve(process.env.FORGERANK_DATA_DIR)
   : null;
+const fixtureQualitySignals = {
+  readme: true,
+  license: true,
+  contributing: true,
+  codeOfConduct: true,
+  security: true,
+  tests: true,
+  ci: true,
+  docker: false,
+  releaseAutomation: true,
+  dependencyManagement: true,
+  documentation: true,
+} satisfies RepositoryQualitySignals;
 
 if (configuredDirectory !== fixtureDirectory) {
   throw new Error(
@@ -175,15 +193,9 @@ async function prepare(): Promise<void> {
         concentrationIndex: "0.520000",
         tagCount: 15,
         detectedTechnologies: fixture.technologies,
-        qualitySignals: {
-          readme: true,
-          license: true,
-          contributing: true,
-          security: true,
-          tests: true,
-          ci: true,
-          docker: false,
-        },
+        technologyDetectionVersion: TECHNOLOGY_DETECTION_VERSION,
+        qualitySignals: fixtureQualitySignals,
+        qualitySignalsVersion: REPOSITORY_QUALITY_SIGNAL_VERSION,
         analysisVersion: "e2e-fixture-v1",
       });
     }
@@ -203,15 +215,9 @@ async function prepare(): Promise<void> {
       concentrationIndex: "0.180000",
       tagCount: 18,
       detectedTechnologies: fixture.technologies,
-      qualitySignals: {
-        readme: true,
-        license: true,
-        contributing: true,
-        security: true,
-        tests: true,
-        ci: true,
-        docker: false,
-      },
+      technologyDetectionVersion: TECHNOLOGY_DETECTION_VERSION,
+      qualitySignals: fixtureQualitySignals,
+      qualitySignalsVersion: REPOSITORY_QUALITY_SIGNAL_VERSION,
       readmeAnalysis: {
         path: "README.md",
         sizeBytes: 8_432,
