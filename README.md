@@ -4,6 +4,8 @@
 
 ForgeRank is an open-source intelligence platform for repository rankings, momentum, engineering activity, discovery, comparison, and ecosystem analysis. It is designed to get more useful as its own snapshot history grows—and to stay honest before that history exists.
 
+**[Visit the ForgeRank project site →](https://othmaneblial.github.io/ForgeRank/)**
+
 ![ForgeRank home](artifacts/visual/home-desktop.png)
 
 ## The defining constraint

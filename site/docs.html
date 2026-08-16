@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="ForgeRank documentation: evidence boundaries, data flow, scoring, local setup, verification, and deployment."
+    />
+    <meta name="theme-color" content="#f2eee4" />
+    <link rel="canonical" href="https://othmaneblial.github.io/ForgeRank/docs.html" />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+    <title>Documentation — ForgeRank</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="index.html" aria-label="ForgeRank home">
+          <img src="assets/icon.svg" alt="" width="34" height="34" />
+          <span>Forge<span>Rank</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span></span><span></span>
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+          <a href="index.html#intelligence">Intelligence</a>
+          <a href="index.html#method">Method</a>
+          <a href="index.html#proof">Proof</a>
+          <a href="docs.html" aria-current="page">Docs</a>
+        </nav>
+        <div class="header-actions">
+          <a
+            class="github-link"
+            href="https://github.com/OthmaneBlial/ForgeRank"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6" /></svg>
+          </a>
+          <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
+            <svg class="sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.5" />
+              <path
+                d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+              />
+            </svg>
+            <svg class="moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 15.3A8.5 8.5 0 0 1 8.7 4 8.5 8.5 0 1 0 20 15.3Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="docs-hero grid-surface">
+        <div class="shell reveal">
+          <p class="eyebrow"><i></i> Documentation / engineering contract</p>
+          <h1>How ForgeRank<br /><em>reasons.</em></h1>
+          <p class="hero-lede">
+            A compact guide to the acquisition boundary, append-only evidence model, versioned
+            scoring, local operation, and verification. The repository remains the source of truth.
+          </p>
+        </div>
+      </section>
+
+      <div class="shell docs-shell">
+        <nav class="docs-nav" aria-label="Documentation sections">
+          <a href="#overview">Overview</a>
+          <a href="#sources">Data sources</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#scoring">Scoring</a>
+          <a href="#similarity">Similarity</a>
+          <a href="#local">Local setup</a>
+          <a href="#verification">Verification</a>
+          <a href="#deployment">Deployment</a>
+          <a href="#limits">Evidence limits</a>
+          <a href="#source-docs">Source documents</a>
+        </nav>
+
+        <article class="docs-content">
+          <section id="overview" class="reveal">
+            <p class="eyebrow">01 / Operating model</p>
+            <h2>Useful before impressive.</h2>
+            <p>
+              ForgeRank is an open-source intelligence platform for repository rankings, momentum,
+              engineering activity, discovery, comparison, and ecosystem analysis. Its core product
+              works without GitHub credentials or external AI services.
+            </p>
+            <p>
+              The product becomes more useful as its own observation history accumulates. Before a
+              defensible history exists, the UI exposes an insufficient-data state rather than
+              substituting current stars, reconstructed history, or an industry average.
+            </p>
+            <div class="docs-callout">
+              <strong>Core rule</strong>
+              <p>Observation and inference stay separate. Missing evidence remains missing.</p>
+            </div>
+          </section>
+
+          <section id="sources" class="reveal">
+            <p class="eyebrow">02 / Source boundary</p>
+            <h2>Public, bounded, policy-aware.</h2>
+            <h3>Allowed sources</h3>
+            <ul>
+              <li>Public GitHub HTML documents when robots policy permits automated access.</li>
+              <li>Public repositories through normal HTTPS Git transport.</li>
+              <li>Public repository files read through a bounded partial clone.</li>
+              <li>ForgeRank’s own historical observations and derived aggregates.</li>
+              <li>Version-controlled identifiers and curated repository collections.</li>
+            </ul>
+            <h3>Prohibited paths</h3>
+            <p>
+              No REST API, GraphQL API, tokens, OAuth, authenticated sessions, hidden JSON
+              endpoints, IP rotation, bot-protection evasion, commercial data APIs, or external
+              embeddings. A static architecture guard scans runtime and dependency files in CI.
+            </p>
+            <div class="docs-callout">
+              <strong>Failure behavior</strong>
+              <p>
+                Unavailable robots policy fails closed. Rate limits pause acquisition. Parser
+                mismatches do not persist malformed values, and cached observations remain readable.
+              </p>
+            </div>
+          </section>
+
+          <section id="architecture" class="reveal">
+            <p class="eyebrow">03 / System boundaries</p>
+            <h2>Dependencies flow inward.</h2>
+            <div class="docs-table-wrap">
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Responsibility</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>src/app + src/components</code></td>
+                    <td>Presentation and product interaction</td>
+                  </tr>
+                  <tr>
+                    <td><code>src/application</code></td>
+                    <td>Use cases and bounded read models</td>
+                  </tr>
+                  <tr>
+                    <td><code>src/domain</code></td>
+                    <td>Pure policy, scores, trends, and classification</td>
+                  </tr>
+                  <tr>
+                    <td><code>src/infrastructure</code></td>
+                    <td>PostgreSQL, public documents, Git, queue, and logs</td>
+                  </tr>
+                  <tr>
+                    <td><code>src/worker</code></td>
+                    <td>Long-running collection and calculation orchestration</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Evidence flow</h3>
+            <ol>
+              <li>Identifiers or validated submissions create canonical repository records.</li>
+              <li>
+                A deduplicated PostgreSQL job records priority, availability, and retry policy.
+              </li>
+              <li>The worker checks source policy, persistent budgets, circuits, and cache.</li>
+              <li>Versioned parsers validate structure and normalize observed fields.</li>
+              <li>A transaction updates the current projection and appends historical evidence.</li>
+              <li>
+                Bounded Git inspection enriches activity, technology, and repository structures.
+              </li>
+              <li>Versioned domain services persist scores, reasons, lifecycle, and rankings.</li>
+            </ol>
+          </section>
+
+          <section id="scoring" class="reveal">
+            <p class="eyebrow">04 / Repository score v1</p>
+            <h2>Six dimensions, one explained total.</h2>
+            <div class="docs-table-wrap">
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Dimension</th>
+                    <th>Maximum</th>
+                    <th>Primary inputs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Impact</td>
+                    <td>25</td>
+                    <td>Log-normalized stars, forks, available longevity</td>
+                  </tr>
+                  <tr>
+                    <td>Momentum</td>
+                    <td>20</td>
+                    <td>Absolute growth, relative growth, acceleration</td>
+                  </tr>
+                  <tr>
+                    <td>Health</td>
+                    <td>20</td>
+                    <td>Commit freshness, active weeks, observed file structures</td>
+                  </tr>
+                  <tr>
+                    <td>Community</td>
+                    <td>15</td>
+                    <td>Non-bot Git-author depth and distribution</td>
+                  </tr>
+                  <tr>
+                    <td>Engineering</td>
+                    <td>10</td>
+                    <td>Sustained activity and maintenance infrastructure</td>
+                  </tr>
+                  <tr>
+                    <td>Trust</td>
+                    <td>10</td>
+                    <td>Evidence confidence minus cautious anomaly penalties</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The dimension sum is multiplied by the observation-confidence factor: 1.00, 0.92,
+              0.75, or 0.50. Every calculation persists one structured positive, neutral, caution,
+              or missing reason for each dimension, together with raw observed inputs.
+            </p>
+            <div class="docs-callout">
+              <strong>Interpretation boundary</strong>
+              <p>
+                File presence and Git activity are evidence inputs. They do not prove correctness,
+                security, code quality, maintainer intent, or individual worth.
+              </p>
+            </div>
+          </section>
+
+          <section id="similarity" class="reveal">
+            <p class="eyebrow">05 / Repository similarity v2</p>
+            <h2>Related means shared evidence.</h2>
+            <p>
+              Similar repositories are calculated deterministically on a fixed 100-point scale:
+              primary language 25, classified-topic overlap 25, detected-technology overlap 20,
+              bounded description-keyword overlap 15, curated-collection overlap 10, and shared
+              known lifecycle 5.
+            </p>
+            <p>
+              Missing dimensions earn zero rather than having their weight redistributed. Matches
+              below 15 are not published. This is evidence overlap—not a semantic AI judgment or a
+              quality claim.
+            </p>
+          </section>
+
+          <section id="local" class="reveal">
+            <p class="eyebrow">06 / Local development</p>
+            <h2>One root entrypoint.</h2>
+            <p>
+              Requirements are Node.js 22+, Git 2.40+, and network access only when public-data
+              indexing is explicitly requested. The default first run makes no GitHub request.
+            </p>
+            <div class="code-block">
+              <div class="terminal-bar">
+                <span>QUICK START</span>
+                <button type="button" class="copy-button" data-copy-target="docs-quickstart">
+                  Copy
+                </button>
+              </div>
+              <pre
+                id="docs-quickstart"
+                tabindex="0"
+                aria-label="ForgeRank quick start commands"
+              ><code>git clone git@github.com:OthmaneBlial/ForgeRank.git
+cd ForgeRank
+./run.sh</code></pre>
+            </div>
+            <h3>Optional explicit enrichment</h3>
+            <div class="code-block">
+              <div class="terminal-bar">
+                <span>INDEX A BOUNDED SAMPLE</span>
+                <button type="button" class="copy-button" data-copy-target="docs-enrich">
+                  Copy
+                </button>
+              </div>
+              <pre
+                id="docs-enrich"
+                tabindex="0"
+                aria-label="ForgeRank enrichment commands"
+              ><code>pnpm forge bootstrap --limit 12
+pnpm forge inspect solidjs/solid
+pnpm forge rank</code></pre>
+            </div>
+          </section>
+
+          <section id="verification" class="reveal">
+            <p class="eyebrow">07 / Quality gates</p>
+            <h2>Test the claims.</h2>
+            <p>
+              ForgeRank’s CI separates static quality, PostgreSQL integration, browser behavior, and
+              Docker smoke deployment. E2E fixtures are sanitized, deterministic, and network-free.
+            </p>
+            <div class="code-block">
+              <div class="terminal-bar">
+                <span>COMPLETE LOCAL AUDIT</span>
+                <button type="button" class="copy-button" data-copy-target="docs-verify">
+                  Copy
+                </button>
+              </div>
+              <pre
+                id="docs-verify"
+                tabindex="0"
+                aria-label="ForgeRank verification commands"
+              ><code>pnpm verify:zero-api
+pnpm audit:dependencies
+pnpm format:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm test:e2e
+pnpm audit:performance
+pnpm audit:postgres</code></pre>
+            </div>
+          </section>
+
+          <section id="deployment" class="reveal">
+            <p class="eyebrow">08 / Deployment</p>
+            <h2>PostgreSQL, web, worker.</h2>
+            <p>
+              The Compose stack contains PostgreSQL, a one-shot migration service, a minimal
+              standalone Next.js web image, and a separate operations image for the CLI and worker.
+              Application containers run as an unprivileged user under <code>tini</code>.
+            </p>
+            <div class="code-block">
+              <div class="terminal-bar">
+                <span>DOCKER</span>
+                <button type="button" class="copy-button" data-copy-target="docs-docker">
+                  Copy
+                </button>
+              </div>
+              <pre
+                id="docs-docker"
+                tabindex="0"
+                aria-label="ForgeRank Docker commands"
+              ><code>docker compose up --build
+docker compose run --rm worker pnpm seed</code></pre>
+            </div>
+            <p>
+              Web liveness is process-only; readiness performs a bounded database query. Worker
+              readiness requires a fresh database-backed heartbeat. Public health responses expose
+              no queue or acquisition internals.
+            </p>
+          </section>
+
+          <section id="limits" class="reveal">
+            <p class="eyebrow">09 / Evidence limits</p>
+            <h2>Scope stays visible.</h2>
+            <ul>
+              <li>A fresh seed contains identifiers—not production analytics.</li>
+              <li>Weekly and monthly momentum need real retained snapshot windows.</li>
+              <li>Public HTML can change despite fixture tests and parser resilience.</li>
+              <li>Git authors are not automatically confirmed public accounts.</li>
+              <li>Ranks cover ForgeRank’s indexed universe, not every GitHub repository.</li>
+              <li>Signals do not prove quality, security, intent, or individual worth.</li>
+            </ul>
+          </section>
+
+          <section id="source-docs" class="reveal">
+            <p class="eyebrow">10 / Repository source of truth</p>
+            <h2>Go deeper in the codebase.</h2>
+            <div class="source-links">
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/ARCHITECTURE.md"
+                >Architecture →</a
+              >
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/DATA_SOURCES.md"
+                >Data sources →</a
+              >
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/SCORING.md">Scoring →</a>
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/PERFORMANCE.md"
+                >Performance →</a
+              >
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/PRIVACY.md">Privacy →</a>
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/SECURITY.md"
+                >Security →</a
+              >
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/docs/PROGRESS.md"
+                >Progress →</a
+              >
+              <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/CONTRIBUTING.md"
+                >Contributing →</a
+              >
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <img src="assets/icon.svg" alt="" width="31" height="31" />
+            <span>Forge<span>Rank</span></span>
+          </a>
+          <p>Public open-source signals, explained with context.</p>
+          <small>Independent from GitHub. No API tokens. No OAuth.</small>
+        </div>
+        <div>
+          <strong>Product</strong>
+          <a href="index.html#intelligence">Intelligence</a>
+          <a href="index.html#method">Method</a>
+          <a href="index.html#proof">Verification</a>
+        </div>
+        <div>
+          <strong>Project</strong>
+          <a href="docs.html">Documentation</a>
+          <a href="https://github.com/OthmaneBlial/ForgeRank">Source</a>
+          <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/CONTRIBUTING.md"
+            >Contributing</a
+          >
+        </div>
+        <div class="footer-meta">
+          <span>© <span data-year></span> ForgeRank</span>
+          <span>Evidence over theater.</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
