@@ -1919,6 +1919,12 @@ h2 em {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .footer-grid > div > a:not(.brand) {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
   .footer-grid > div:first-child,
   .footer-meta {
     grid-column: 1 / -1;
