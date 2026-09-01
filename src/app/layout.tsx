@@ -35,12 +35,22 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const isDemoMode = process.env.FORGERANK_DEMO_MODE === "1";
+
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body>
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
+        {isDemoMode && (
+          <div className="demo-banner" role="status">
+            <strong>Sample mode</strong>
+            <span>
+              Illustrative synthetic values · isolated local database · no network collection
+            </span>
+          </div>
+        )}
         <ServiceWorkerRegistration />
         <SiteHeader />
         <main id="main-content" tabIndex={-1}>

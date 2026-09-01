@@ -16,9 +16,13 @@ export function CompareBuilder({
     setError(null);
     setValues((current) => current.map((item, itemIndex) => (itemIndex === index ? value : item)));
   };
-  const submit = (event: React.FormEvent) => {
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const clean = values.map((value) => value.trim()).filter(Boolean);
+    const clean = new FormData(event.currentTarget)
+      .getAll("repositories")
+      .map(String)
+      .map((value) => value.trim())
+      .filter(Boolean);
     const unique = new Set(clean.map((value) => value.toLowerCase()));
     if (
       clean.length < 2 ||
@@ -42,6 +46,7 @@ export function CompareBuilder({
           <label key={index}>
             <span>Repository {index + 1}</span>
             <input
+              name="repositories"
               aria-label={`Repository ${index + 1}`}
               value={value}
               onChange={(event) => update(index, event.target.value)}

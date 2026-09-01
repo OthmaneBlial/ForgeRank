@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { ForgeLogo } from "@/components/brand/forge-logo";
@@ -145,11 +146,13 @@ export function SiteHeader() {
 }
 
 function CommandPalette({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResults>(emptyResults);
   const [suggestions, setSuggestions] = useState<SearchResults>(emptyResults);
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const activeIndexRef = useRef(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const paletteRef = useRef<HTMLDivElement>(null);
 
@@ -208,6 +211,10 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
 
   const visibleResults = query.trim().length < 2 ? suggestions : results;
   const hasResults = Object.values(visibleResults).some((group) => group.length > 0);
+  const selectIndex = (index: number) => {
+    activeIndexRef.current = index;
+    setActiveIndex(index);
+  };
   const onPaletteKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Tab") {
       const focusable = [
@@ -232,22 +239,27 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       if (options.length === 0) return;
-      setActiveIndex((current) =>
+      selectIndex(
         event.key === "ArrowDown"
-          ? (current + 1) % options.length
-          : current <= 0
+          ? (activeIndexRef.current + 1) % options.length
+          : activeIndexRef.current <= 0
             ? options.length - 1
-            : current - 1,
+            : activeIndexRef.current - 1,
       );
     } else if (event.key === "Home" && options.length > 0) {
       event.preventDefault();
-      setActiveIndex(0);
+      selectIndex(0);
     } else if (event.key === "End" && options.length > 0) {
       event.preventDefault();
-      setActiveIndex(options.length - 1);
-    } else if (event.key === "Enter" && activeIndex >= 0) {
+      selectIndex(options.length - 1);
+    } else if (event.key === "Enter" && activeIndexRef.current >= 0) {
       event.preventDefault();
-      options[activeIndex]?.click();
+      const destination = options[activeIndexRef.current]?.href;
+      if (destination) {
+        const url = new URL(destination);
+        router.push(`${url.pathname}${url.search}${url.hash}`);
+        onClose();
+      }
     }
   };
 
@@ -269,7 +281,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
-              setActiveIndex(-1);
+              selectIndex(-1);
             }}
             placeholder="Search repositories, developers, technologies…"
             aria-label="Search query"

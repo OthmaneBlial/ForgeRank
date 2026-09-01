@@ -9,14 +9,16 @@
     "node": ">=22.16.0"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "e2e:prepare": "FORGERANK_DATA_DIR=data/e2e-pglite tsx scripts/prepare-e2e.ts",
+    "e2e:prepare": "FORGERANK_SAMPLE_PROFILE=e2e FORGERANK_DATA_DIR=data/e2e-pglite tsx scripts/prepare-sample-data.ts",
+    "demo:prepare": "FORGERANK_SAMPLE_PROFILE=demo FORGERANK_DATA_DIR=data/demo-pglite tsx scripts/prepare-sample-data.ts",
+    "demo": "pnpm demo:prepare && FORGERANK_DEMO_MODE=1 FORGERANK_DATA_DIR=data/demo-pglite next dev --hostname 127.0.0.1 --port 3001",
     "test:e2e": "pnpm e2e:prepare && playwright test",
     "audit:accessibility": "pnpm e2e:prepare && playwright test e2e/accessibility.spec.ts",
     "audit:dependencies": "pnpm audit --prod",

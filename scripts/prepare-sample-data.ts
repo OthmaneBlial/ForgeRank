@@ -8,6 +8,7 @@ import { recalculateDeveloper } from "@/application/recalculate-developer";
 import { recalculateRepository } from "@/application/recalculate-repository";
 import { refreshRepositoryRankings } from "@/application/refresh-rankings";
 import { seedIdentifiers } from "@/application/seed";
+import { TOPIC_DEFINITIONS } from "@/domain/topics";
 import {
   REPOSITORY_QUALITY_SIGNAL_VERSION,
   TECHNOLOGY_DETECTION_VERSION,
@@ -21,14 +22,26 @@ import {
   rankingSnapshots,
   repositories,
   repositoryContributors,
+  topics,
 } from "@/infrastructure/db/schema";
 import { persistRepositorySnapshot } from "@/infrastructure/db/repository-store";
 
 const DAY_MS = 24 * 60 * 60 * 1_000;
-const fixtureDirectory = path.resolve(process.cwd(), "data", "e2e-pglite");
+const sampleProfile = process.env.FORGERANK_SAMPLE_PROFILE;
+if (sampleProfile !== "e2e" && sampleProfile !== "demo") {
+  throw new Error('Set FORGERANK_SAMPLE_PROFILE to either "e2e" or "demo".');
+}
+
+const sampleDirectory = path.resolve(
+  process.cwd(),
+  "data",
+  sampleProfile === "e2e" ? "e2e-pglite" : "demo-pglite",
+);
 const configuredDirectory = process.env.FORGERANK_DATA_DIR
   ? path.resolve(process.env.FORGERANK_DATA_DIR)
   : null;
+const sampleVersion = sampleProfile === "e2e" ? "e2e-fixture-v1" : "demo-sample-v1";
+const sampleStrategy = sampleProfile === "e2e" ? "sanitized-e2e-fixture" : "synthetic-demo-sample";
 const fixtureQualitySignals = {
   readme: true,
   license: true,
@@ -43,9 +56,9 @@ const fixtureQualitySignals = {
   documentation: true,
 } satisfies RepositoryQualitySignals;
 
-if (configuredDirectory !== fixtureDirectory) {
+if (configuredDirectory !== sampleDirectory) {
   throw new Error(
-    `Refusing to prepare E2E data outside ${fixtureDirectory}. Set FORGERANK_DATA_DIR to that exact path.`,
+    `Refusing to prepare ${sampleProfile} data outside ${sampleDirectory}. Set FORGERANK_DATA_DIR to that exact path.`,
   );
 }
 
@@ -68,7 +81,7 @@ type FixtureRepository = {
   }>;
 };
 
-const fixtures: FixtureRepository[] = [
+const e2eFixtures: FixtureRepository[] = [
   {
     fullName: "sharkdp/bat",
     description: "A command-line developer tool with syntax highlighting.",
@@ -135,15 +148,108 @@ const fixtures: FixtureRepository[] = [
   },
 ];
 
+const demoFixtures: FixtureRepository[] = [
+  {
+    fullName: "demo-labs/atlas-cli",
+    description: "A synthetic command-line toolkit used to demonstrate transparent ranking.",
+    language: "Rust",
+    stars: [980, 1_280, 1_360],
+    forks: 110,
+    commits30d: 24,
+    commits90d: 71,
+    activeWeeks12: 10,
+    authors90d: 7,
+    topAuthorShare: 0.38,
+    technologies: [
+      { name: "Rust", category: "language", confidence: "HIGH", evidence: "Cargo.toml" },
+      { name: "GitHub Actions", category: "ci", confidence: "HIGH", evidence: ".github/workflows" },
+    ],
+  },
+  {
+    fullName: "demo-labs/relay-ui",
+    description: "A fictional component library with a growing contributor cohort.",
+    language: "TypeScript",
+    stars: [2_400, 2_430, 2_470],
+    forks: 240,
+    commits30d: 38,
+    commits90d: 106,
+    activeWeeks12: 12,
+    authors90d: 14,
+    topAuthorShare: 0.24,
+    technologies: [
+      { name: "React", category: "framework", confidence: "HIGH", evidence: "package.json" },
+      { name: "TypeScript", category: "language", confidence: "HIGH", evidence: "tsconfig.json" },
+    ],
+  },
+  {
+    fullName: "open-sample/pulse-kit",
+    description: "A synthetic interface toolkit created for the isolated ForgeRank demo.",
+    language: "TypeScript",
+    stars: [1_700, 1_745, 1_810],
+    forks: 150,
+    commits30d: 31,
+    commits90d: 84,
+    activeWeeks12: 11,
+    authors90d: 10,
+    topAuthorShare: 0.29,
+    technologies: [
+      { name: "Svelte", category: "framework", confidence: "HIGH", evidence: "package.json" },
+      { name: "TypeScript", category: "language", confidence: "HIGH", evidence: "tsconfig.json" },
+    ],
+  },
+  {
+    fullName: "open-sample/streamline",
+    description: "A fictional reactive library used to exercise comparison and momentum views.",
+    language: "TypeScript",
+    stars: [890, 925, 970],
+    forks: 72,
+    commits30d: 19,
+    commits90d: 58,
+    activeWeeks12: 9,
+    authors90d: 6,
+    topAuthorShare: 0.41,
+    technologies: [
+      { name: "TypeScript", category: "language", confidence: "HIGH", evidence: "tsconfig.json" },
+      { name: "Vitest", category: "testing", confidence: "MEDIUM", evidence: "vitest.config.ts" },
+    ],
+  },
+];
+
+const fixtures = sampleProfile === "e2e" ? e2eFixtures : demoFixtures;
+const featuredRepository = fixtures[0]?.fullName;
+const sampleDeveloper =
+  sampleProfile === "e2e"
+    ? {
+        username: "sharkdp",
+        displayName: "David Peter",
+        bio: "Open-source command-line tool developer.",
+        location: "Europe",
+        sourceUrl: "https://github.com/sharkdp",
+      }
+    : {
+        username: "demo-labs",
+        displayName: "Sample Maintainer",
+        bio: "Synthetic profile for the isolated ForgeRank demonstration.",
+        location: "Demo dataset",
+        sourceUrl: "https://github.com/demo-labs",
+      };
+
 function daysAgo(now: Date, days: number): Date {
   return new Date(now.getTime() - days * DAY_MS);
 }
 
 async function prepare(): Promise<void> {
-  await rm(fixtureDirectory, { recursive: true, force: true });
-  await mkdir(path.dirname(fixtureDirectory), { recursive: true });
+  await rm(sampleDirectory, { recursive: true, force: true });
+  await mkdir(path.dirname(sampleDirectory), { recursive: true });
   await migrateDatabase();
-  await seedIdentifiers();
+  if (sampleProfile === "e2e") {
+    await seedIdentifiers();
+  } else {
+    const taxonomyDatabase = await getDatabase();
+    for (const topic of TOPIC_DEFINITIONS) {
+      await taxonomyDatabase.insert(topics).values(topic).onConflictDoNothing();
+    }
+  }
 
   const database = await getDatabase();
   const now = new Date();
@@ -166,7 +272,7 @@ async function prepare(): Promise<void> {
         isFork: false,
         isArchived: false,
         observedAt: daysAgo(now, days),
-        parserVersion: "e2e-fixture-v1",
+        parserVersion: sampleVersion,
         confidence: "HIGH",
       });
     }
@@ -176,11 +282,11 @@ async function prepare(): Promise<void> {
       .update(repositories)
       .set({ repositoryCreatedAt: daysAgo(now, 900), nextRefreshAt: daysAgo(now, -2) })
       .where(eq(repositories.id, repositoryId));
-    if (fixture.fullName === "sharkdp/bat") {
+    if (fixture.fullName === featuredRepository) {
       await database.insert(gitAnalyses).values({
         repositoryId,
         analyzedAt: daysAgo(now, 45),
-        strategy: "sanitized-e2e-fixture",
+        strategy: sampleStrategy,
         latestCommitAt: daysAgo(now, 50),
         oldestKnownCommitAt: daysAgo(now, 500),
         commits30d: 2,
@@ -196,19 +302,19 @@ async function prepare(): Promise<void> {
         technologyDetectionVersion: TECHNOLOGY_DETECTION_VERSION,
         qualitySignals: fixtureQualitySignals,
         qualitySignalsVersion: REPOSITORY_QUALITY_SIGNAL_VERSION,
-        analysisVersion: "e2e-fixture-v1",
+        analysisVersion: sampleVersion,
       });
     }
     await database.insert(gitAnalyses).values({
       repositoryId,
       analyzedAt,
-      strategy: "sanitized-e2e-fixture",
+      strategy: sampleStrategy,
       latestCommitAt: daysAgo(now, 2),
       oldestKnownCommitAt: daysAgo(now, 365),
       commits30d: fixture.commits30d,
       commits90d: fixture.commits90d,
       activeWeeks12: fixture.activeWeeks12,
-      previousDormantPeriodDays: fixture.fullName === "sharkdp/bat" ? 210 : null,
+      previousDormantPeriodDays: fixture.fullName === featuredRepository ? 210 : null,
       uniqueAuthors90d: fixture.authors90d,
       topContributorShare: String(fixture.topAuthorShare),
       topThreeContributorShare: String(Math.min(0.9, fixture.topAuthorShare + 0.32)),
@@ -231,15 +337,15 @@ async function prepare(): Promise<void> {
         confidence: "HIGH",
         version: "readme-structure-v1",
       },
-      analysisVersion: "e2e-fixture-v1",
+      analysisVersion: sampleVersion,
     });
 
-    if (fixture.fullName === "sharkdp/bat") {
+    if (fixture.fullName === featuredRepository) {
       await database.insert(repositoryContributors).values([
         {
           repositoryId,
           contributorKey: "e2e-author-1",
-          displayName: "Fixture Author One",
+          displayName: sampleProfile === "e2e" ? "Fixture Author One" : "Sample Contributor One",
           commits: 27,
           firstCommitAt: daysAgo(now, 80),
           lastCommitAt: daysAgo(now, 2),
@@ -247,7 +353,7 @@ async function prepare(): Promise<void> {
         {
           repositoryId,
           contributorKey: "e2e-author-2",
-          displayName: "Fixture Author Two",
+          displayName: sampleProfile === "e2e" ? "Fixture Author Two" : "Sample Contributor Two",
           commits: 19,
           firstCommitAt: daysAgo(now, 70),
           lastCommitAt: daysAgo(now, 3),
@@ -260,14 +366,14 @@ async function prepare(): Promise<void> {
   }
 
   const developerId = await persistDeveloperSnapshot({
-    username: "sharkdp",
-    displayName: "David Peter",
-    bio: "Open-source command-line tool developer.",
-    location: "Europe",
+    username: sampleDeveloper.username,
+    displayName: sampleDeveloper.displayName,
+    bio: sampleDeveloper.bio,
+    location: sampleDeveloper.location,
     avatarUrl: null,
-    sourceUrl: "https://github.com/sharkdp",
+    sourceUrl: sampleDeveloper.sourceUrl,
     observedAt: now,
-    parserVersion: "e2e-fixture-v1",
+    parserVersion: sampleVersion,
     confidence: "HIGH",
   });
   await recalculateDeveloper(developerId);
@@ -283,10 +389,16 @@ async function prepare(): Promise<void> {
   const rankedByName = new Map(
     rankedRepositories.map((repository) => [repository.fullName, repository]),
   );
+  const [firstName, secondName, thirdName, fourthName] = fixtures.map(
+    (fixture) => fixture.fullName,
+  );
+  if (!firstName || !secondName || !thirdName || !fourthName) {
+    throw new Error("Each sample profile must define exactly four repositories.");
+  }
   const historicalRuns = [
-    { daysAgo: 31, order: ["solidjs/solid", "sharkdp/bat", "sveltejs/svelte", "facebook/react"] },
-    { daysAgo: 8, order: ["facebook/react", "solidjs/solid", "sharkdp/bat", "sveltejs/svelte"] },
-    { daysAgo: 2, order: ["facebook/react", "sveltejs/svelte", "solidjs/solid", "sharkdp/bat"] },
+    { daysAgo: 31, order: [fourthName, firstName, thirdName, secondName] },
+    { daysAgo: 8, order: [secondName, fourthName, firstName, thirdName] },
+    { daysAgo: 2, order: [secondName, thirdName, fourthName, firstName] },
   ];
   for (const run of historicalRuns) {
     const calculatedAt = daysAgo(now, run.daysAgo);
@@ -300,13 +412,13 @@ async function prepare(): Promise<void> {
         rank: index + 1,
         score: repository.score,
         calculatedAt,
-        rankingVersion: "e2e-fixture-v1",
+        rankingVersion: sampleVersion,
       });
     }
   }
 
   process.stdout.write(
-    `Prepared isolated E2E fixture: repositories=${fixtures.length} developer=sharkdp ranked=${ranked} network=unused.\n`,
+    `Prepared isolated ${sampleProfile} sample: repositories=${fixtures.length} developer=${sampleDeveloper.username} ranked=${ranked} network=unused directory=${sampleDirectory}.\n`,
   );
 }
 

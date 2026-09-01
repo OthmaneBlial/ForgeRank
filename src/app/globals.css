@@ -125,6 +125,31 @@ a {
   transform: translateY(0);
 }
 
+.demo-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  gap: 10px;
+  padding: 7px 18px;
+  color: #fff8ee;
+  background: #76260d;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.075em;
+  line-height: 1.35;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.demo-banner strong {
+  color: #ffffff;
+}
+
+.demo-banner span {
+  opacity: 0.82;
+}
+
 .shell {
   width: min(1440px, calc(100% - 56px));
   margin-inline: auto;

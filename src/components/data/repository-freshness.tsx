@@ -58,9 +58,11 @@ export function RepositoryFreshness({
         )}
         Request refresh
       </button>
-      {status.kind !== "idle" && status.kind !== "loading" && (
+      {status.kind !== "idle" && (
         <p className={`refresh-status refresh-status-${status.kind}`} role="status">
-          {status.message}
+          {status.kind === "loading"
+            ? "Refresh requested; waiting for the local queue to confirm."
+            : status.message}
         </p>
       )}
     </div>

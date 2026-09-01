@@ -2,8 +2,8 @@
 
 ## Allowed sources
 
-- Public GitHub HTML documents when their robots policy permits automated access.
-- Public Git repositories over normal HTTPS Git transport.
+- Selected public GitHub repository pages only when the current robots rules allow the exact URL.
+- Public Git repositories through bounded normal HTTPS Git operations.
 - Public repository files read through a bounded partial clone.
 - ForgeRank's own historical observations and derived aggregates.
 - Version-controlled repository identifiers and curated collections.
@@ -11,17 +11,17 @@
 
 ## Prohibited sources
 
-ForgeRank has no runtime path for the GitHub API, GraphQL, tokens, OAuth, authenticated sessions, hidden JSON endpoints, IP rotation, bot-protection evasion, fake accounts, commercial data APIs, or external AI/embedding services.
+ForgeRank has no runtime path for the GitHub REST or GraphQL API, tokens, OAuth, GitHub Apps, authenticated sessions, hidden JSON endpoints, Git LFS object downloads, IP rotation, bot-protection evasion, fake accounts, commercial data APIs, or external AI/embedding services.
 
 ## Public HTML acquisition
 
-The fetcher identifies ForgeRank through a configurable public contact URL. It checks robots policy, honors caches and conditional requests, enforces a five-megabyte document cap, follows at most two safe same-host redirects to the same document kind, uses bounded retries, respects retry-after, and records status, duration, hash, parser, and timestamp. Host circuits plus hourly and daily request budgets are stored in PostgreSQL so all workers share the same limit across restarts.
+The fetcher identifies ForgeRank through a configurable public contact URL. It checks the exact requested URL against the current robots policy, fails closed when the decision is unavailable or ambiguous, honors caches and conditional requests, enforces a five-megabyte document cap, follows at most two safe same-host redirects to the same document kind, uses bounded retries, respects retry-after, and records status, duration, hash, parser, and timestamp. Host circuits plus hourly and daily request budgets are stored in PostgreSQL so all workers share the same limit across restarts. Robots compliance is an operational safeguard, not a claim of GitHub approval or a blanket right to collect public information.
 
 Selectors live in `src/infrastructure/github-public/selectors.ts`. Sanitized fixtures prevent ordinary tests from generating public traffic.
 
 ## Git inspection
 
-The Git inspector uses shallow, single-branch, blobless bare clones and incremental fetches. Repository trees are capped at 30,000 paths per analysis. Manifest reads are allowlisted and capped at 512 KiB. Git analysis v4 passes normalized non-vendored paths and bounded root manifest content through a pluggable detector registry for package.json, pyproject.toml, requirements.txt, Cargo.toml, go.mod, pom.xml, Gradle, Gemfile, composer.json, pubspec.yaml, Dockerfiles, and Docker Compose. Every technology result carries its evidence and confidence.
+The Git inspector uses shallow, single-branch, blobless bare clones and incremental fetches. It does not fetch Git LFS objects. Repository trees are capped at 30,000 paths per analysis. Manifest reads are allowlisted and capped at 512 KiB. Git analysis v4 passes normalized non-vendored paths and bounded root manifest content through a pluggable detector registry for package.json, pyproject.toml, requirements.txt, Cargo.toml, go.mod, pom.xml, Gradle, Gemfile, composer.json, pubspec.yaml, Dockerfiles, and Docker Compose. Every technology result carries its evidence and confidence.
 
 Repository-quality-signals-v2 records only deterministic file presence for README, license, contributing, code of conduct, security, tests, CI, Docker, release automation, dependency management, and dedicated documentation. README alone does not satisfy the dedicated-documentation signal, and none of these values proves correctness, security, or quality. The shallowest canonical README is size-checked and its content is inspected only when it fits the same 512 KiB ceiling; persisted output contains bounded structural counts and sanitized headings, not raw README content. Contributor metrics use sanitized Git author display names and irreversible local keys; commit emails are neither stored for display nor surfaced.
 

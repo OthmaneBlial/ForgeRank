@@ -1,57 +1,92 @@
-# ForgeRank
+<p align="center">
+  <img src="site/assets/icon.svg" width="72" height="72" alt="ForgeRank logo" />
+</p>
 
-**Discover what matters in open source.**
+<h1 align="center">ForgeRank</h1>
 
-ForgeRank is an open-source intelligence platform for repository rankings, momentum, engineering activity, discovery, comparison, and ecosystem analysis. It is designed to get more useful as its own snapshot history grows—and to stay honest before that history exists.
+<p align="center"><strong>Explainable repository rankings from public evidence—without GitHub API credentials.</strong></p>
 
-**[Visit the ForgeRank project site →](https://othmaneblial.github.io/ForgeRank/)**
+<p align="center">
+  <a href="https://othmaneblial.github.io/ForgeRank/">Project site</a> ·
+  <a href="https://othmaneblial.github.io/ForgeRank/demo.html">Guided demo</a> ·
+  <a href="https://othmaneblial.github.io/ForgeRank/docs.html">Documentation</a> ·
+  <a href="SCORING.md">Scoring method</a>
+</p>
 
-![ForgeRank home](artifacts/visual/home-desktop.png)
+![ForgeRank running with its isolated synthetic sample dataset](artifacts/readme/forgerank-demo.jpg)
 
-## The defining constraint
+ForgeRank helps you compare the momentum, engineering activity, maturity, and contributor structure of public repositories—then inspect exactly why every score and rank exists.
 
-ForgeRank does not use the GitHub REST API, GraphQL API, tokens, OAuth, GitHub Apps, authenticated sessions, hidden frontend endpoints, external AI services, or commercial data APIs.
+It ranks only the repositories it has observed. Missing, blocked, stale, or insufficient evidence stays visible instead of being estimated.
 
-It observes only policy-permitted public HTML documents, normal public Git transport, public repository files, explicitly documented seed identifiers, and its own append-only history. A CI guard rejects prohibited runtime patterns.
+## Try a useful screen first
 
-## What works today
+Requirements: Node.js 22.16+, pnpm 11.22+, and Git 2.40+.
 
-- Premium responsive product UI with light/dark themes and keyboard command search.
-- PostgreSQL full-text and trigram-fuzzy search across repositories, owners, developers, languages, technologies, topics, and collections, with real suggestions and complete keyboard navigation.
-- Repository discovery, public URL submission, deduplicated database queue, and a worker.
-- Conservative HTML acquisition with robots checks, persistent cache, budgets, jitter, backoff, retry-after handling, size limits, and a circuit breaker.
-- Shared database-backed request budgets/circuits and stale worker-lock recovery across restarts.
-- Cadence-driven hot/active/normal/cold refresh scheduling with deterministic priority, deduplication, cooldowns, and persistent privacy-hashed intake limits.
-- Versioned fixture-tested repository and public-profile HTML parsers with provenance and structural validation.
-- Safe shallow/blobless Git inspection using argument arrays—never interpolated shell commands.
-- Git-derived activity, privacy-safe author concentration, primary-language detection, all eleven specified repository-structure signals, and a pluggable confidence-tagged technology detector registry spanning Node, Python, Rust, Go, JVM, Ruby, PHP, Dart/Flutter, Docker, and Docker Compose evidence.
-- Bounded README structure analysis for observed blob size, headings, recognized badges, installation guidance, and documentation links, with no subjective quality grade.
-- Versioned ForgeRank Signals that translate maintenance cadence, lifecycle, contributor structure, snapshot momentum, repository structures, and visible Git tags into factual evidence cards without predicting quality or maintainer intent.
-- Versioned related-repository evidence across language, topics, detected technologies, bounded description keywords, curated collections, and lifecycle—without embeddings or external AI—plus browseable deterministic technology ecosystems.
-- Append-only repository/developer/ranking/language-ecosystem snapshots, source-document audit records, repository aliases/transfers, versioned scores with persisted dimension-level reasons, and bounded background downsampling for long histories.
-- Repository detail rank history with accessible completed-run charts, exact current ranking denominators, and honest 24-hour, 7-day, and 30-day movement windows that never interpolate missing runs.
-- Versioned repository timelines that derive observed-star and indexed-rank crossings, comparable momentum increases, resumed activity, dormancy transitions, and new Git tags only from retained evidence; first observations never backfill milestones, tags are not automatically labeled releases, and exact external dates are never reconstructed.
-- Confirmed developer profiles, explicit non-fork portfolio evidence, transparent developer score v1, strict Git-author identity boundaries, and nine distinct evidence-gated developer leaderboard categories with shareable ecosystem/location/activity/archetype filters.
-- A rich repository leaderboard with ten ranking modes; real 1/7/30/90-day, one-year, and all-history growth windows; language, star-band, age, lifecycle, original/fork, and search filters; sortable evidence columns; exact denominators; server pagination; shareable URLs; and dedicated mobile cards.
-- Repository details, deterministic topics, trending, discovery, shareable two-to-five repository and indexed-language ecosystem comparisons, languages, collections, coverage, coverage-bounded daily/weekly intelligence reports, badges, local watchlists, and repository submission.
-- A shareable Momentum Matrix with language, topic, repository-age, and minimum-star filters; fixed-scale momentum, logarithmic observed popularity, real snapshot-window growth evidence, explicit coverage denominators, accessible point details, and honest missing-history states.
-- Distinct evidence-gated Trending, Rising, Breakout, Most Improved, Hidden Gems, Established, Most Active, and neutrally worded Cooling Giants modes with shareable 1/7/30-day windows and no popularity fallback when history is missing.
-- Privacy-safe JSON/CSV repository exports, including versioned derived timeline events in JSON, plus dynamic repository/developer social cards.
-- PWA manifest, offline shell/recent-page behavior, dynamic sitemap, canonical product metadata, and accessible mobile alternatives for dense tables.
-- Accessible loading skeletons on data-heavy routes, in-shell retry recovery, a self-contained root failure document, and a custom no-guess 404 that preserves its real HTTP status.
-- Embedded PostgreSQL-compatible local development with PGlite; PostgreSQL in Docker/production.
+```bash
+git clone https://github.com/OthmaneBlial/ForgeRank.git
+cd ForgeRank
+corepack enable
+pnpm install --frozen-lockfile
+pnpm demo
+```
 
-The complete product specification remains broader. [Progress](docs/PROGRESS.md) records what is implemented and what is still required without relabeling incomplete work as finished.
+Open [http://127.0.0.1:3001](http://127.0.0.1:3001).
 
-## Quick start
+Sample mode creates a dedicated `data/demo-pglite` database containing four fictional repositories and synthetic observations. A persistent banner labels every screen. It does not contact GitHub, does not touch the normal local database, and is safe to rebuild repeatedly.
 
-Requirements: Node.js 22+, Git 2.40+, and network access only when you explicitly run public-data indexing.
+Prefer to look before cloning? The [guided browser demo](https://othmaneblial.github.io/ForgeRank/demo.html) lets you switch repositories and evidence windows, open score reasons, and see the cohort boundary using the same clearly labeled fictional dataset.
+
+## What ForgeRank answers
+
+| Question                                                | Product surface                                     | Evidence boundary                                                           |
+| ------------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------------------------------- |
+| What is moving inside my tracked set?                   | Trending modes and the Momentum Matrix              | Comparable retained snapshots only                                          |
+| Is a project large, accelerating, active, or all three? | Reach × momentum and repository score reasons       | Each dimension keeps raw inputs and confidence                              |
+| Why did this repository rank here?                      | Six persisted score reasons and global rank history | Score version, cohort size, and calculation time stay visible               |
+| Which projects are genuinely related?                   | Deterministic similarity and technology ecosystems  | Shared language, topics, technologies, keywords, collections, and lifecycle |
+| What changed since the last observation?                | Repository timeline, daily pulse, and weekly report | Derived only from retained evidence; no reconstructed dates                 |
+| Can developer evidence be shown responsibly?            | Confirmed profiles and non-fork portfolios          | Git authors are never silently relabeled as public accounts                 |
+
+ForgeRank is not a quality oracle, security scanner, hiring score, or universal GitHub leaderboard. It is an evidence workbench for a disclosed observed corpus.
+
+## Why not just sort by stars?
+
+Stars describe observed reach. They do not explain whether activity is sustained, attention is accelerating, contributor structure is concentrated, or the repository evidence is fresh enough to compare.
+
+ForgeRank keeps those questions separate:
+
+- **Impact** measures observed reach inside the indexed corpus.
+- **Momentum** uses comparable snapshot windows rather than a popularity fallback.
+- **Health** describes recent bounded activity and visible repository structures.
+- **Community** uses privacy-safe Git-author depth and distribution.
+- **Engineering** records sustained activity and maintenance infrastructure.
+- **Trust** reflects evidence completeness and cautious anomaly handling.
+
+The raw dimension sum is multiplied by observation confidence. Every calculation persists one positive, neutral, caution, or missing reason per dimension. See [SCORING.md](SCORING.md) for the exact formulas and interpretation limits.
+
+## The evidence boundary
+
+ForgeRank does not call GitHub’s REST or GraphQL APIs, require a token or OAuth grant, use a GitHub App or authenticated session, call hidden frontend endpoints, fetch Git LFS objects, or depend on external AI services.
+
+It can use:
+
+- selected public repository pages only when the current robots rules allow the exact URL;
+- bounded normal HTTPS Git operations and allowlisted repository files;
+- version-controlled identifiers and curated collections;
+- its own timestamped, append-only observations and derived aggregates.
+
+Collection is identified, cached, budgeted, and stopped on robots denial, throttling, or uncertainty. Avoiding REST/GraphQL credentials does **not** mean unlimited access, GitHub approval, or complete coverage. Read the full [data-source contract](DATA_SOURCES.md), [privacy boundary](PRIVACY.md), and [architecture decisions](docs/DECISIONS.md).
+
+## Start a real local index
+
+The normal first run creates an embedded PGlite database, migrates it, and loads identifier-only seeds. It makes no GitHub request.
 
 ```bash
 ./run.sh
 ```
 
-The script installs dependencies, migrates the embedded local database, loads repository identifiers and collections, then starts the app. It does **not** contact GitHub. In another terminal, enrich a small policy-governed batch:
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000). The initial empty-evidence states are expected. When you deliberately want to collect a bounded public sample, use a second terminal:
 
 ```bash
 pnpm forge bootstrap --limit 12
@@ -59,109 +94,72 @@ pnpm forge inspect solidjs/solid
 pnpm forge rank
 ```
 
-Or run the steps yourself:
-
-```bash
-pnpm install
-pnpm db:migrate
-pnpm seed
-pnpm dev
-```
-
-No GitHub credentials exist in `.env.example` because ForgeRank has no credential-based GitHub path.
-
-## Operational CLI
-
-```text
-pnpm forge index owner/repository
-pnpm forge index-user username
-pnpm forge inspect owner/repository
-pnpm forge refresh owner/repository
-pnpm forge schedule --limit 25
-pnpm forge bootstrap --limit 12
-pnpm forge recalculate
-pnpm forge recalculate-users
-pnpm forge rank
-pnpm forge developer-hide username --reason "verified request"
-pnpm forge developer-show username --reason "approved restoration"
-pnpm forge developer-correct username bio hide --reason "verified correction"
-pnpm forge developer-audit username
-pnpm forge ecosystem-snapshot
-pnpm forge snapshot-maintenance          # dry-run report
-pnpm forge snapshot-maintenance --apply  # deliberate downsampling
-pnpm forge cache-status
-pnpm forge cache-prune
-pnpm forge queue-status
-pnpm forge worker-health --max-age 90
-pnpm worker
-```
-
-`index` observes a policy-permitted public repository document. `index-user` observes a public user profile and scores only explicitly non-fork repositories already in the index. `inspect` performs a bounded Git clone/fetch. `bootstrap` is intentionally conservative and defaults to 12 identifiers. `refresh` and repository-page requests only prioritize deduplicated queue work; `schedule` fills a bounded batch according to cadence and interest. Developer visibility/correction commands are local operator controls, require an audit reason, and preserve source provenance. Ranking runs append language-ecosystem snapshots. Snapshot maintenance keeps full resolution for 90 days, one observation per UTC day through one year, then one per UTC week; its CLI is dry-run unless `--apply` is explicit. Production HTTP requests never trigger synchronous external collection.
+Production HTTP requests never perform synchronous external collection. Submission and refresh actions only prioritize deduplicated queue work for the separate worker.
 
 ## Architecture
 
 ```text
-Curated identifiers / user submissions
-                  ↓
-        Database-backed job queue
-                  ↓
- Robots-aware HTML fetcher   Safe Git inspector
-                  ↘          ↙
-             Normalized evidence
-                    ↓
-       Append-only snapshots + provenance
-                    ↓
-     Versioned scoring and ranking jobs
-                    ↓
-        Cached server-rendered product UI
+Validated identifiers / submissions
+                │
+                ▼
+      PostgreSQL-backed job queue
+                │
+         ┌──────┴──────┐
+         ▼             ▼
+ exact robots check  bounded HTTPS Git
+ + selected page     + allowlisted files
+         └──────┬──────┘
+                ▼
+     normalized, versioned evidence
+                ▼
+ append-only snapshots + provenance
+                ▼
+ scores, reasons, ranks, reports, UI
 ```
 
-The presentation layer never parses source HTML or invokes Git. See [ARCHITECTURE.md](ARCHITECTURE.md), [DATA_SOURCES.md](DATA_SOURCES.md), and [SCORING.md](SCORING.md).
+The presentation layer never parses source HTML or invokes Git. PGlite supports local development; PostgreSQL supports the worker, shared budgets, queue locking, search, and deployment. Start with [ARCHITECTURE.md](ARCHITECTURE.md) and the concise [project documentation](https://othmaneblial.github.io/ForgeRank/docs.html).
 
-## Verification
+## Current limitations
+
+- A fresh real index contains identifiers, not analytics.
+- Weekly, monthly, and longer trends remain unavailable until real snapshots span those windows.
+- Public page structure, robots rules, Git service behavior, and GitHub policies can change.
+- Rankings cover ForgeRank’s observed corpus, not every GitHub repository.
+- Git authors are not automatically confirmed public accounts.
+- File presence, activity, popularity, and score reasons do not prove correctness, security, code quality, maintainer intent, or individual worth.
+- The guided and local demos use fictional repositories and synthetic values; they demonstrate behavior, not current external facts.
+
+The detailed implementation ledger is in [docs/PROGRESS.md](docs/PROGRESS.md). It records both verified work and evidence that still needs time or external operation.
+
+## Verify the project
+
+GitHub Actions is intentionally paused during the current product rework. The repository-local gates remain canonical:
 
 ```bash
-pnpm verify:zero-api
-pnpm audit:dependencies
 pnpm format:check
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
+pnpm verify
 pnpm test:e2e
 pnpm audit:accessibility
 pnpm audit:performance
 pnpm audit:postgres
 ```
 
-Tests do not require public GitHub traffic. Parser tests use sanitized version-controlled fixtures; every E2E and performance run rebuilds a dedicated PGlite database containing explicit test-only evidence and never reuses the development database or calls the network. Production seeds remain identifier-only. The production dependency audit checks the lockfile through pnpm and runs in CI. The accessibility audit covers representative desktop/mobile routes in both themes, keyboard focus behavior, and reduced motion. The separate performance audit builds and serves the optimized standalone application, then enforces the documented local lab budgets in [PERFORMANCE.md](PERFORMANCE.md). The PostgreSQL audit uses `DATABASE_URL` when supplied; otherwise it creates and removes an isolated local cluster, then verifies idempotent migrations, extensions, seed counts, filtered snapshot-backed Momentum Matrix and repository-leaderboard reads, persisted revival evidence, queue locking, persistent limits, and worker heartbeats without touching an existing database.
+`pnpm verify` runs the zero-API architecture guard, lint, typecheck, unit tests, and a production build. Browser fixtures are deterministic, isolated, and network-free. The PostgreSQL audit uses a disposable database and never targets an existing database unless `DATABASE_URL` explicitly points to one.
 
-## Docker
+## Contributing
 
-```bash
-docker compose up --build
-docker compose run --rm worker pnpm seed
-```
+Useful contributions include:
 
-The compose stack contains PostgreSQL, a one-shot migration service, a minimal standalone web image, and a separate operations image for the CLI/worker. Both application images run as an unprivileged user under `tini`; PostgreSQL, Git cache, and HTTP cache use separate volumes. Web readiness verifies a database query, while worker readiness requires a fresh database-backed heartbeat. Public `/api/health/live` and `/api/health/ready` responses intentionally expose no internal queue or source state. Set a URL-safe `FORGERANK_POSTGRES_PASSWORD`, the public `NEXT_PUBLIC_SITE_URL`, a real `FORGERANK_CONTACT_URL`, and a unique `FORGERANK_RATE_LIMIT_SALT` outside local development.
+- reporting a scoring or source-parser defect with reproducible evidence;
+- adding sanitized parser fixtures and failure cases;
+- improving score explanations, accessibility, or documentation;
+- implementing a scoped item from the roadmap;
+- proposing a larger acquisition or scoring change before coding it.
 
-## Operator dashboard
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture boundaries, fixture rules, and the required checks. Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
-`/admin/system` is disabled by default. For loopback-only development, start the app with `FORGERANK_ENABLE_LOCAL_ADMIN=1`; that bypass is rejected in production and for any non-loopback host.
+## License status
 
-For a production deployment, set `FORGERANK_ENABLE_ADMIN=1`, inject a non-empty `FORGERANK_ADMIN_USERNAME`, and inject a unique `FORGERANK_ADMIN_PASSWORD` of at least 20 characters from the deployment secret store. The route uses HTTP Basic authentication, exact constant-time credential comparison, a second authorization check beside the data query, and private/no-store responses. Serve it only over HTTPS and ensure the reverse proxy forwards the `Authorization` header. A private network or proxy IP allowlist is still recommended as another boundary.
+A reusable software license has not been selected yet. The source is publicly readable, but copyright law applies and reuse rights should not be assumed until the repository owner adds a license. Selecting an explicit license is the remaining community-readiness decision.
 
-## Important limitations
-
-- A fresh seed contains identifiers, not analytics. Metrics appear only after real observations.
-- Weekly/monthly momentum remains unavailable until sufficient snapshots exist.
-- Public HTML can change; parser fixtures, failure tracking, and circuit breaking reduce—but cannot eliminate—maintenance.
-- Git authors are not automatically confirmed public accounts.
-- Rankings cover ForgeRank's indexed universe, not every GitHub repository.
-- Signals do not prove code quality, project security, maintainer intent, manipulation, or individual worth.
-
-## Contributing and policy
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [PRIVACY.md](PRIVACY.md). Any acquisition change must preserve the zero-API boundary, robots policy, conservative budgets, source provenance, and privacy constraints.
-
-ForgeRank is independent from GitHub and is not an official GitHub product.
+ForgeRank is an independent project and is not affiliated with, endorsed by, or sponsored by GitHub, Inc. GitHub is a trademark of GitHub, Inc.
