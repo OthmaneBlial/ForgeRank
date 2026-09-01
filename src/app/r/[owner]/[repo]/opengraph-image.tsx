@@ -44,7 +44,7 @@ export default async function RepositoryOpenGraphImage({
           Forge<span style={{ color: "#e75825" }}>Rank</span>
         </strong>
         <span style={{ padding: "10px 16px", border: "1px solid #8d887f", background: "#f4f0e8" }}>
-          PUBLIC EVIDENCE · ZERO GITHUB API
+          PUBLIC EVIDENCE · NO API CREDENTIALS
         </span>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>

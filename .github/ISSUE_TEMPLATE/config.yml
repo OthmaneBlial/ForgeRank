@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Support and issue routing
+    url: https://github.com/OthmaneBlial/ForgeRank/blob/main/SUPPORT.md
+    about: Choose the right public issue form and see what information is safe to share.
   - name: Security vulnerability
     url: https://github.com/OthmaneBlial/ForgeRank/security/advisories/new
     about: Report vulnerabilities privately instead of opening a public issue.

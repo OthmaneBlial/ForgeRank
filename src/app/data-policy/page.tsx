@@ -13,9 +13,10 @@ export default function DataPolicyPage() {
       <article className="shell policy-grid">
         <Policy icon={Database} title="Sources we use">
           <p>
-            Public repository and profile HTML where automated access is permitted, normal public
-            Git protocol access, public repository files, version-controlled seed identifiers,
-            licensed open datasets when explicitly documented, and ForgeRank&apos;s own snapshots.
+            Selected public repository pages and public profile root pages only when the current
+            robots rules allow the exact URL, normal public Git protocol access, public repository
+            files, version-controlled seed identifiers, licensed open datasets when explicitly
+            documented, and ForgeRank&apos;s own snapshots.
           </p>
         </Policy>
         <Policy icon={Shield} title="Sources we never require">
@@ -56,9 +57,10 @@ export default function DataPolicyPage() {
         </Policy>
         <Policy icon={Scale} title="Independence">
           <p>
-            ForgeRank is an independent open-source intelligence project and is not affiliated with,
-            endorsed by, or an official product of GitHub. GitHub trademarks belong to their
-            respective owners.
+            ForgeRank is an independent repository-intelligence project and is not affiliated with,
+            endorsed by, sponsored by, or an official product of GitHub. Robots compliance is an
+            operational safeguard, not a claim of GitHub approval or a blanket right to collect
+            public information. GitHub trademarks belong to their respective owners.
           </p>
         </Policy>
         <section className="policy-full">

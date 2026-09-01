@@ -14,7 +14,7 @@ Use Next.js server components for data surfaces, minimal client islands for comm
 
 ## ADR-004 — Editorial industrial visual language
 
-ForgeRank uses Newsreader, IBM Plex Sans/Mono, graphite/paper themes, forge-orange signal accents, square analytical surfaces, and restrained motion. The intended memory is an open-source observatory, not a generic gradient SaaS dashboard.
+ForgeRank uses Newsreader, IBM Plex Sans/Mono, graphite/paper themes, forge-orange signal accents, square analytical surfaces, and restrained motion. The intended memory is a repository observatory, not a generic gradient SaaS dashboard.
 
 ## ADR-005 — Missing data is a first-class state
 

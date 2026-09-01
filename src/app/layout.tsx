@@ -11,9 +11,9 @@ import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-regis
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: { default: "ForgeRank — Open-source intelligence", template: "%s | ForgeRank" },
+  title: { default: "ForgeRank — Repository intelligence", template: "%s | ForgeRank" },
   description:
-    "Rankings, momentum, growth and engineering activity across open-source repositories and developers, built without the GitHub API.",
+    "Rankings, momentum, growth and engineering activity across open-source repositories and developers, built without GitHub REST or GraphQL API credentials.",
   applicationName: "ForgeRank",
   category: "technology",
   manifest: "/manifest.webmanifest",

@@ -11,7 +11,8 @@
   <a href="https://othmaneblial.github.io/ForgeRank/demo.html">Guided demo</a> ·
   <a href="https://othmaneblial.github.io/ForgeRank/docs.html">Documentation</a> ·
   <a href="SCORING.md">Scoring method</a> ·
-  <a href="https://www.npmjs.com/package/forgerank">npm package</a>
+  <a href="https://www.npmjs.com/package/forgerank">npm package</a> ·
+  <a href="https://github.com/OthmaneBlial/ForgeRank/releases/tag/v0.1.1">v0.1.1 release</a>
 </p>
 
 ![ForgeRank running with its isolated synthetic sample dataset](artifacts/readme/forgerank-demo.jpg)
@@ -171,7 +172,7 @@ Useful contributions include:
 - implementing a scoped item from the roadmap;
 - proposing a larger acquisition or scoring change before coding it.
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture boundaries, fixture rules, and the required checks. Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture boundaries, fixture rules, and the required checks. For questions and issue routing, start with [SUPPORT.md](SUPPORT.md). Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
 ## License status
 

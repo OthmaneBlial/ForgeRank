@@ -22,7 +22,7 @@ export default async function HomePage() {
       <section className="home-hero shell">
         <div className="hero-copy">
           <div className="hero-kicker">
-            <span className="live-pip" /> Open-source intelligence / Index 001
+            <span className="live-pip" /> Repository intelligence / Index 001
           </div>
           <h1>
             Discover what matters
@@ -31,7 +31,7 @@ export default async function HomePage() {
           </h1>
           <p>
             Rankings, momentum, growth and engineering activity across repositories and developers —
-            built from public signals, never a GitHub API.
+            built from public signals without GitHub REST or GraphQL API credentials.
           </p>
           <HomeSearch />
           <div className="hero-links">

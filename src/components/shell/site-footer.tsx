@@ -8,9 +8,10 @@ export function SiteFooter() {
       <div className="shell footer-grid">
         <div>
           <ForgeLogo />
-          <p>Public open-source signals, explained with context.</p>
+          <p>Public repository signals, explained with context.</p>
           <span className="independence-note">
-            Independent from GitHub. No API tokens. No OAuth.
+            Not affiliated with, endorsed by, or sponsored by GitHub. No REST or GraphQL API
+            credentials. No OAuth.
           </span>
         </div>
         <div className="footer-links">
