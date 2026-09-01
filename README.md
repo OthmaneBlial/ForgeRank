@@ -147,6 +147,8 @@ The presentation layer never parses source HTML or invokes Git. PGlite supports 
 
 The detailed implementation ledger is in [docs/PROGRESS.md](docs/PROGRESS.md). It records both verified work and evidence that still needs time or external operation.
 
+If ForgeRank's evidence-first approach is useful to you, [star the repository](https://github.com/OthmaneBlial/ForgeRank) so you can find it again and help other builders discover it.
+
 ## Verify the project
 
 GitHub Actions is intentionally paused during the current product rework. The repository-local gates remain canonical:
