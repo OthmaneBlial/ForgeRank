@@ -1,9 +1,9 @@
 {
   "name": "forgerank",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Explainable repository rankings from public GitHub evidence—without REST or GraphQL API credentials.",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "author": "Othmane Blial",
   "homepage": "https://othmaneblial.github.io/ForgeRank/",
   "repository": {
@@ -17,6 +17,7 @@
     "github",
     "analytics",
     "repository-analysis",
+    "open-source",
     "rankings",
     "developer-tools",
     "local-first",

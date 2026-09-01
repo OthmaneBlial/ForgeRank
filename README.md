@@ -12,7 +12,8 @@
   <a href="https://othmaneblial.github.io/ForgeRank/docs.html">Documentation</a> ·
   <a href="SCORING.md">Scoring method</a> ·
   <a href="https://www.npmjs.com/package/forgerank">npm package</a> ·
-  <a href="https://github.com/OthmaneBlial/ForgeRank/releases/tag/v0.1.1">v0.1.1 release</a>
+  <a href="https://github.com/OthmaneBlial/ForgeRank/releases/tag/v0.1.2">v0.1.2 release</a> ·
+  <a href="LICENSE">Apache-2.0 license</a>
 </p>
 
 ![ForgeRank running with its isolated synthetic sample dataset](artifacts/readme/forgerank-demo.jpg)
@@ -176,8 +177,8 @@ Useful contributions include:
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture boundaries, fixture rules, and the required checks. For questions and issue routing, start with [SUPPORT.md](SUPPORT.md). Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
-## License status
+## License
 
-A reusable software license has not been selected yet. The source is publicly readable and the npm package is explicitly marked `UNLICENSED`, but copyright law applies and reuse rights should not be assumed until the repository owner adds a license. Selecting an explicit license is the remaining community-readiness decision.
+ForgeRank is licensed under the [Apache License, Version 2.0](LICENSE). Its terms include an explicit, contributor-specific patent grant and a patent-litigation termination clause; they are not a blanket warranty against third-party patent claims.
 
 ForgeRank is an independent project and is not affiliated with, endorsed by, or sponsored by GitHub, Inc. GitHub is a trademark of GitHub, Inc.

@@ -15,7 +15,7 @@ This page records durable capabilities and open evidence gaps. It intentionally 
 - Repository, developer, language, technology, topic, collection, comparison, report, Momentum Matrix, search, watchlist, badge, sitemap, and PWA surfaces.
 - Versioned PostgreSQL persistence, queueing, scheduling, shared request budgets, parser circuits, worker health, retention, operator controls, and local data exports.
 - A network-free sample profile with four fictional repositories in a dedicated PGlite directory. Run it with `pnpm demo`.
-- A public `forgerank` npm package exposing the operations CLI and worker. Version `0.1.0` was verified from a clean registry install through migrations and seed loading.
+- A public Apache-2.0-licensed `forgerank` npm package exposing the operations CLI and worker. Each release is checked as a packed tarball and again through migrations and seed loading after a clean registry install.
 
 ## Evidence boundaries
 
@@ -33,7 +33,6 @@ This page records durable capabilities and open evidence gaps. It intentionally 
 - Broader long-running operation, parser drift against future public-page changes, and real-device assistive-technology review require ongoing observation.
 - The split unprivileged container design and PostgreSQL audit exist, but an actual Docker Compose run is still an explicit release proof rather than an assumed result.
 - GitHub Actions is intentionally paused during the current product rework. Local verification remains authoritative until the workflow is restored.
-- No reusable software license has been selected. The source is publicly readable and the npm package is marked `UNLICENSED`, but reuse rights should not be assumed until the repository owner adds a license.
 
 ## Verification contract
 
