@@ -92,6 +92,9 @@ importers:
       drizzle-kit:
         specifier: ^0.31.4
         version: 0.31.10
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
       eslint:
         specifier: ^9.34.0
         version: 9.39.5(supports-color@7.2.0)

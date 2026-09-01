@@ -310,6 +310,28 @@ pnpm demo</code></pre>
               collection. Run <code>./run.sh</code> instead to start a normal identifier-only index
               on <code>127.0.0.1:3000</code>.
             </p>
+            <h3>CLI-only npm install</h3>
+            <p>
+              The public npm package exposes the operations CLI and worker without a repository
+              clone. Its embedded database and caches stay in <code>.forgerank/</code> inside the
+              invocation directory.
+            </p>
+            <div class="code-block">
+              <div class="terminal-bar">
+                <span>INSTALL THE CLI</span>
+                <button type="button" class="copy-button" data-copy-target="docs-npm-install">
+                  Copy
+                </button>
+              </div>
+              <pre
+                id="docs-npm-install"
+                tabindex="0"
+                aria-label="ForgeRank npm CLI installation commands"
+              ><code>npm install --global forgerank
+mkdir my-forgerank-index &amp;&amp; cd my-forgerank-index
+forgerank db migrate
+forgerank seed</code></pre>
+            </div>
             <h3>Optional explicit enrichment</h3>
             <div class="code-block">
               <div class="terminal-bar">
@@ -452,6 +474,7 @@ docker compose run --rm worker pnpm seed</code></pre>
         <div>
           <strong>Project</strong>
           <a href="docs.html">Documentation</a>
+          <a href="https://www.npmjs.com/package/forgerank">npm package</a>
           <a href="https://github.com/OthmaneBlial/ForgeRank">Source</a>
           <a href="https://github.com/OthmaneBlial/ForgeRank/blob/main/CONTRIBUTING.md"
             >Contributing</a

@@ -35,31 +35,32 @@ import { takeLanguageEcosystemSnapshots } from "@/application/take-ecosystem-sna
 import { getLatestWorkerHealth } from "@/infrastructure/observability/worker-health";
 
 function printHelp(): void {
+  const executable = process.env.FORGERANK_DISTRIBUTION === "npm" ? "forgerank" : "pnpm forge";
   process.stdout.write(`ForgeRank operations CLI
 
 Usage:
-  pnpm forge db migrate
-  pnpm forge seed
-  pnpm forge index owner/repository [--force]
-  pnpm forge index-user username [--force]
-  pnpm forge inspect owner/repository
-  pnpm forge refresh owner/repository
-  pnpm forge schedule [--limit 25]
-  pnpm forge bootstrap [--limit 12]
-  pnpm forge recalculate [--all]
-  pnpm forge recalculate-users
-  pnpm forge rank
-  pnpm forge developer-hide username --reason "verified request"
-  pnpm forge developer-show username --reason "approved restoration"
-  pnpm forge developer-correct username display-name|bio|location set|hide|revert [value] --reason "verified correction"
-  pnpm forge developer-audit username
-  pnpm forge ecosystem-snapshot
-  pnpm forge snapshot-maintenance [--apply]
-  pnpm forge cache-status
-  pnpm forge cache-prune
-  pnpm forge queue-status
-  pnpm forge worker-health [--max-age 90]
-  pnpm forge parser-test
+  ${executable} db migrate
+  ${executable} seed
+  ${executable} index owner/repository [--force]
+  ${executable} index-user username [--force]
+  ${executable} inspect owner/repository
+  ${executable} refresh owner/repository
+  ${executable} schedule [--limit 25]
+  ${executable} bootstrap [--limit 12]
+  ${executable} recalculate [--all]
+  ${executable} recalculate-users
+  ${executable} rank
+  ${executable} developer-hide username --reason "verified request"
+  ${executable} developer-show username --reason "approved restoration"
+  ${executable} developer-correct username display-name|bio|location set|hide|revert [value] --reason "verified correction"
+  ${executable} developer-audit username
+  ${executable} ecosystem-snapshot
+  ${executable} snapshot-maintenance [--apply]
+  ${executable} cache-status
+  ${executable} cache-prune
+  ${executable} queue-status
+  ${executable} worker-health [--max-age 90]
+  ${executable} parser-test
 
 The CLI never requires or accepts GitHub credentials.
 `);

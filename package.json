@@ -1,9 +1,42 @@
 {
   "name": "forgerank",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
-  "description": "Discover what matters in open source without relying on the GitHub API.",
+  "description": "Explainable GitHub repository rankings from public evidence—without API tokens or OAuth.",
+  "license": "UNLICENSED",
+  "author": "Othmane Blial",
+  "homepage": "https://othmaneblial.github.io/ForgeRank/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OthmaneBlial/ForgeRank.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OthmaneBlial/ForgeRank/issues"
+  },
+  "keywords": [
+    "github",
+    "analytics",
+    "repository-analysis",
+    "open-source",
+    "rankings",
+    "developer-tools",
+    "local-first",
+    "zero-api"
+  ],
+  "bin": {
+    "forgerank": "bin/forgerank.mjs",
+    "forgerank-worker": "bin/forgerank-worker.mjs"
+  },
+  "files": [
+    "bin/",
+    "data/seeds/",
+    "dist/",
+    "drizzle/",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "packageManager": "pnpm@11.22.0",
   "engines": {
     "node": ">=22.16.0"
@@ -32,6 +65,9 @@
     "seed": "tsx src/cli/index.ts seed",
     "forge": "tsx src/cli/index.ts",
     "worker": "tsx src/worker/index.ts",
+    "package:build": "esbuild src/cli/index.ts src/worker/index.ts --bundle --packages=external --platform=node --format=esm --target=node22 --outbase=src --outdir=dist",
+    "prepack": "pnpm package:build",
+    "prepublishOnly": "pnpm verify",
     "verify:zero-api": "tsx scripts/verify-zero-api.ts",
     "verify": "pnpm verify:zero-api && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
   },
@@ -66,6 +102,7 @@
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "drizzle-kit": "^0.31.4",
+    "esbuild": "^0.28.2",
     "eslint": "^9.34.0",
     "eslint-config-next": "16.3.1",
     "jsdom": "^26.1.0",

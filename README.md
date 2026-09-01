@@ -10,7 +10,8 @@
   <a href="https://othmaneblial.github.io/ForgeRank/">Project site</a> ·
   <a href="https://othmaneblial.github.io/ForgeRank/demo.html">Guided demo</a> ·
   <a href="https://othmaneblial.github.io/ForgeRank/docs.html">Documentation</a> ·
-  <a href="SCORING.md">Scoring method</a>
+  <a href="SCORING.md">Scoring method</a> ·
+  <a href="https://www.npmjs.com/package/forgerank">npm package</a>
 </p>
 
 ![ForgeRank running with its isolated synthetic sample dataset](artifacts/readme/forgerank-demo.jpg)
@@ -36,6 +37,20 @@ Open [http://127.0.0.1:3001](http://127.0.0.1:3001).
 Sample mode creates a dedicated `data/demo-pglite` database containing four fictional repositories and synthetic observations. A persistent banner labels every screen. It does not contact GitHub, does not touch the normal local database, and is safe to rebuild repeatedly.
 
 Prefer to look before cloning? The [guided browser demo](https://othmaneblial.github.io/ForgeRank/demo.html) lets you switch repositories and evidence windows, open score reasons, and see the cohort boundary using the same clearly labeled fictional dataset.
+
+## Install the operations CLI
+
+The npm package exposes the indexing CLI and worker without requiring a repository clone. It stores its embedded database and caches in `.forgerank/` inside the directory where you invoke it.
+
+```bash
+npm install --global forgerank
+mkdir my-forgerank-index && cd my-forgerank-index
+forgerank db migrate
+forgerank seed
+forgerank bootstrap --limit 12
+```
+
+Run `forgerank --help` for the complete command list. The package requires Node.js 22.16+ and Git 2.40+. It never requires or accepts GitHub credentials.
 
 ## What ForgeRank answers
 
