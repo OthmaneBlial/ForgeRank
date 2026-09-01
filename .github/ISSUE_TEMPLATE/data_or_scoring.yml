@@ -1,0 +1,50 @@
+name: Data or scoring issue
+description: Challenge an observation, score reason, confidence state, or cohort boundary.
+title: "[evidence] "
+labels: [evidence]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ForgeRank should make disagreement inspectable. Report the evidence shown by the product, not private GitHub data or credentials.
+  - type: input
+    id: repository
+    attributes:
+      label: Repository identifier
+      description: Public owner/name identifier, when the issue concerns one repository.
+      placeholder: owner/repository
+  - type: input
+    id: surface
+    attributes:
+      label: Product surface
+      placeholder: Repository score reasons, Momentum Matrix, weekly report…
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Evidence ForgeRank displayed
+      description: Include observation time, confidence, freshness, cohort, and score version when available.
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: Why is the result misleading or incorrect?
+      description: Distinguish a calculation defect from legitimately unavailable or insufficient evidence.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected evidence treatment
+      placeholder: Withhold the value, change the reason, reduce confidence, correct the cohort…
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: This report contains no token, private repository data, email address, or inferred account identity.
+          required: true

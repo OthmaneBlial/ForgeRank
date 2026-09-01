@@ -1,0 +1,37 @@
+name: Feature request
+description: Propose a focused improvement with an explicit evidence boundary.
+title: "[proposal] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user or operator decision that is difficult today.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Explain the smallest useful behavior, without prescribing an implementation unless necessary.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and missing-data behavior
+      description: What public evidence supports this feature, and what should happen when it is missing or stale?
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: ForgeRank boundaries
+      options:
+        - label: The proposal does not require GitHub API tokens, OAuth, authenticated scraping, or hidden endpoints.
+          required: true
+        - label: The proposal does not infer public identities from Git authors or harvest contact data.
+          required: true
+        - label: Synthetic values, if needed for a demo, will remain explicitly labeled.
+          required: true

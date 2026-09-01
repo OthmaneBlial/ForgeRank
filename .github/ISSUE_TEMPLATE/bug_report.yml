@@ -3,22 +3,61 @@ description: Report a reproducible ForgeRank defect.
 title: "[bug] "
 labels: [bug]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve ForgeRank. Do not include tokens, private repository data, email addresses, or a copy of your local database.
   - type: textarea
+    id: problem
     attributes:
       label: What happened?
+      description: Describe the visible behavior and why it looks incorrect.
+      placeholder: I expected… but ForgeRank showed…
     validations:
       required: true
   - type: textarea
+    id: reproduction
     attributes:
       label: Reproduction
-      description: Include the route, commands, and data state without secrets.
+      description: Include the route, commands, and evidence state without secrets.
+      placeholder: |
+        1. Start with…
+        2. Open…
+        3. Observe…
     validations:
       required: true
   - type: textarea
+    id: expected
     attributes:
       label: Expected behavior
+      description: Explain what a truthful result or missing-data state should show.
     validations:
       required: true
   - type: input
+    id: revision
     attributes:
       label: ForgeRank revision
+      description: Commit SHA, release, or branch name.
+      placeholder: 7267cfe
+  - type: dropdown
+    id: storage
+    attributes:
+      label: Storage mode
+      options:
+        - PGlite / local demo
+        - PostgreSQL
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Safe diagnostic evidence
+      description: Add redacted logs or screenshots. Dragging files here attaches them to the issue.
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Data boundary
+      options:
+        - label: I removed credentials, private data, email addresses, and full database contents.
+          required: true
