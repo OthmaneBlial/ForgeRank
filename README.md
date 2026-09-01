@@ -175,6 +175,6 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture boundaries, fixt
 
 ## License status
 
-A reusable software license has not been selected yet. The source is publicly readable, but copyright law applies and reuse rights should not be assumed until the repository owner adds a license. Selecting an explicit license is the remaining community-readiness decision.
+A reusable software license has not been selected yet. The source is publicly readable and the npm package is explicitly marked `UNLICENSED`, but copyright law applies and reuse rights should not be assumed until the repository owner adds a license. Selecting an explicit license is the remaining community-readiness decision.
 
 ForgeRank is an independent project and is not affiliated with, endorsed by, or sponsored by GitHub, Inc. GitHub is a trademark of GitHub, Inc.
